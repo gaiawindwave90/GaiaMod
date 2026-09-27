@@ -1,6 +1,7 @@
 import messages from './tag-messages.js';
 export default [
     {tag: 'scratch', intlLabel: 'Scratch'},
+    {tag: 'gm', intlLabel: 'GaiaMod'},
     {tag: 'pm', intlLabel: 'PenguinMod'},
     {tag: 'tw', intlLabel: 'TurboWarp'},
 
