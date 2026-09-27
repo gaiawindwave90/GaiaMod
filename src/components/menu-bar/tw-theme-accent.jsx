@@ -64,7 +64,7 @@ const options = defineMessages({
     [ACCENT_GAIABLUE]: {
         defaultMessage: 'Gaia Blue',
         description: 'Name of the pure blue color scheme, used by GaiaMod by default.',
-        id: 'tw.accent.red'
+        id: 'tw.accent.gaiablue'
     }
 });
 
