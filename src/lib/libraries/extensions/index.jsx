@@ -989,6 +989,29 @@ export default [
         featured: true
     },
 	//
+{
+	name: (
+        <FormattedMessage
+            defaultMessage="SharkPool's Extension Gallery"
+            description="Name of sharkpools-extensions.vercel.app/ in extension library"
+            id="pm.sharkpoolGallery.name"
+        />
+    ),
+    href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
+    extensionId: 'sharkpool-gallery',
+    iconURL: sharkpoolGalleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
+            description="Name for the sharkpoolGallery gallery"
+            id="pm.sharkpoolGallery.more"
+        />
+    ),
+    tags: ['sharkpool', 'library'],
+    featured: true
+};
+	//
     {
         name: (
             <FormattedMessage
@@ -1027,12 +1050,6 @@ const gallerySourceDisplay = {
         href: 'https://extensions.turbowarp.org/',
         iconURL: galleryIcon,
         tag: 'tw'
-    },
-	sharkpool: {
-        name: 'SharkPool\'s Extension Gallery',
-        href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
-        iconURL: spIcon,
-        tag: 'sharkpool'
     }
 };
 
@@ -1059,10 +1076,5 @@ export const galleryStatusItems = {
         loading: createGalleryStatusItem('turbowarp', 'Loading TurboWarp extension gallery...'),
         more: createGalleryStatusItem('turbowarp', 'Learn more about extensions at extensions.turbowarp.org.'),
         error: createGalleryStatusItem('turbowarp', 'Error loading TurboWarp extension gallery. Visit extensions.turbowarp.org to find more extensions.')
-    },
-	sharkpool: {
-        loading: createGalleryStatusItem('sharkpool', 'Loading SharkPool\'s extension gallery...'),
-        more: createGalleryStatusItem('sharkpool', 'Extensions created by SharkPool & other contributors. Click on an extension to add it to your project.'),
-        error: createGalleryStatusItem('sharkpool', 'Error loading SharkPool\'s extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions.')
-    },
+    }
 };
