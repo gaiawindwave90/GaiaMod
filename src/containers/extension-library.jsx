@@ -9,7 +9,7 @@ import {manuallyTrustExtension} from './tw-security-manager.jsx';
 import extensionLibraryContent, {
     galleryStatusItems
 } from '../lib/libraries/extensions/index.jsx';
-import extensionTags from '../lib/libraries/tw-extension-tags';
+import extensionTags from '../lib/libraries/extension-tags';
 import {
     addPackURL,
     getCachedPack,
