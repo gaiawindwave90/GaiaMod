@@ -30,4 +30,6 @@ export default [
 
     {tag: 'library', intlLabel: messages.library},
 
+    {type: 'divider'},
+
 ];
