@@ -3,7 +3,7 @@ import projectData from './project-data';
 /* eslint-disable import/no-unresolved */
 import overrideDefaultProject from '!arraybuffer-loader!./override-default-project.sb3';
 import backdrop from '!raw-loader!./cd21514d0531fdffb22204e0ec5ed84a.svg';
-import costume1 from '!raw-loader!./penguin.svg';
+import costume1 from '!raw-loader!./ship-guy.svg';
 /* eslint-enable import/no-unresolved */
 import {TextEncoder} from '../tw-text-encoder';
 
@@ -37,7 +37,7 @@ const defaultProject = translator => {
         dataFormat: 'SVG',
         data: encoder.encode(backdrop)
     }, {
-        id: 'd1c55bd7b6ad8b25d5470f24b25ff5ea',
+        id: '87eac32b5f78f74ae51af6409f6bffca',
         assetType: 'ImageVector',
         dataFormat: 'SVG',
         data: encoder.encode(costume1)
