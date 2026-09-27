@@ -10,6 +10,9 @@ import extensionLibraryContent, {
     galleryError,
     galleryLoading,
     galleryMore,
+	gaiamodGalleryError,
+    gaiamodGalleryLoading,
+    gaiamodGalleryMore,
     sharkpoolGallery,
     penguinmodGallery
 } from '../lib/libraries/extensions/index.jsx';
@@ -51,6 +54,7 @@ const translateGalleryItem = (extension, locale) => ({
 });
 
 let cachedGallery = null;
+let cachedGaiaGallery = null;
 let externalGalleryListenerAttached = false;
 
 const fetchLibrary = async () => {
@@ -67,7 +71,56 @@ const fetchLibrary = async () => {
         extensionId: extension.id,
         extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
         iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
-        tags: [],
+        tags: 'tw',
+        credits: [
+            ...(extension.original || []),
+            ...(extension.by || [])
+        ].map(credit => {
+            if (credit.link) {
+                return (
+                    <a
+                        href={credit.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        key={credit.name}
+                    >
+                        {credit.name}
+                    </a>
+                );
+            }
+            return credit.name;
+        }),
+        docsURI: extension.docs ? `https://extensions.turbowarp.org/${extension.slug}` : null,
+        samples: extension.samples ? extension.samples.map(sample => ({
+            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
+            text: sample
+        })) : null,
+        incompatibleWithScratch: !extension.scratchCompatible,
+        featured: true
+    }))
+        .map(extension => twLibraryMixin[extension.extensionId] ?
+            {...extension, ...twLibraryMixin[extension.extensionId]} :
+            (console.debug(`no mixin for ${extension.extensionId}`) || extension)
+        )
+        .map(extension => ({...extension, tags: [...extension.tags, "tw"]}))
+        .filter(extension => !extension.hide);
+};
+
+const fetchGaiaLibrary = async () => {
+    const res = await fetch('https://gaiawindwave90.github.io/gm-extensions/generated-metadata/extensions-v0.json');
+    if (!res.ok) {
+        throw new Error(`HTTP status ${res.status}`);
+    }
+    const data = await res.json();
+    return data.extensions.map(extension => ({
+        name: extension.name,
+        nameTranslations: extension.nameTranslations || {},
+        description: extension.description,
+        descriptionTranslations: extension.descriptionTranslations || {},
+        extensionId: extension.id,
+        extensionURL: `https://gaiawindwave90.github.io/gm-extensions/${extension.slug}.js`,
+        iconURL: `https://gaiawindwave90.github.io/gm-extensions/${extension.image || 'images/unknown.svg'}`,
+        tags: 'gm',
         credits: [
             ...(extension.original || []),
             ...(extension.by || [])
@@ -114,12 +167,39 @@ class ExtensionLibrary extends React.PureComponent {
             gallery: cachedGallery,
             galleryError: null,
             galleryTimedOut: false,
+            gaiaGallery: cachedGaiaGallery,
+            gaiaGalleryError: null,
+            gaiaGalleryTimedOut: false,
         };
     }
     componentDidMount () {
         if (!externalGalleryListenerAttached) {
             window.addEventListener('message', this.wrapperEventHandler);
         }
+		if (!this.state.gaiaGallery) {
+            const timeout = setTimeout(() => {
+                this.setState({
+                    gaiaGalleryTimedOut: true
+                });
+            }, 750);
+
+            fetchGaiaLibrary()
+                .then(gallery => {
+                    cachedGaiaGallery = gaiaGallery;
+                    this.setState({
+                        gaiaGallery
+                    });
+                    clearTimeout(timeout);
+                })
+                .catch(error => {
+                    log.error(error);
+                    this.setState({
+                        gaiaGalleryError: error
+                    });
+                    clearTimeout(timeout);
+                });
+        }
+		//TurboWarp
         if (!this.state.gallery) {
             const timeout = setTimeout(() => {
                 this.setState({
@@ -247,13 +327,14 @@ class ExtensionLibrary extends React.PureComponent {
     }
     render () {
         let library = null;
-        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
+        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) || (this.state.gaiaGallery || this.state.gaiaGalleryError || this.state.gaiaGalleryTimedOut) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
             library = library.concat(penguinmodGallery.map(toLibraryItem));
             library.push('---');
             if (this.state.gallery) {
                 library.push(toLibraryItem(galleryMore));
+                library.push(toLibraryItem(gaiamodGalleryMore));
                 library.push(toLibraryItem(sharkpoolGallery));
                 const locale = this.props.intl.locale;
                 library.push(
@@ -263,8 +344,10 @@ class ExtensionLibrary extends React.PureComponent {
                 );
             } else if (this.state.galleryError) {
                 library.push(toLibraryItem(galleryError));
+                library.push(toLibraryItem(gaiaGalleryError));
             } else {
                 library.push(toLibraryItem(galleryLoading));
+                library.push(toLibraryItem(gaiaGalleryLoading));
             }
         }
 
