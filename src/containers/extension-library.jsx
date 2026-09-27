@@ -327,14 +327,13 @@ class ExtensionLibrary extends React.PureComponent {
     }
     render () {
         let library = null;
-        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) || (this.state.gaiaGallery || this.state.gaiaGalleryError || this.state.gaiaGalleryTimedOut) {
+        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
             library = library.concat(penguinmodGallery.map(toLibraryItem));
             library.push('---');
             if (this.state.gallery) {
                 library.push(toLibraryItem(galleryMore));
-                library.push(toLibraryItem(gaiamodGalleryMore));
                 library.push(toLibraryItem(sharkpoolGallery));
                 const locale = this.props.intl.locale;
                 library.push(
@@ -344,9 +343,24 @@ class ExtensionLibrary extends React.PureComponent {
                 );
             } else if (this.state.galleryError) {
                 library.push(toLibraryItem(galleryError));
-                library.push(toLibraryItem(gaiaGalleryError));
             } else {
                 library.push(toLibraryItem(galleryLoading));
+            }
+        }
+		if (this.state.gaiaGallery || this.state.gaiaGalleryError || this.state.gaiaGalleryTimedOut) {
+            library = extensionLibraryContent.map(toLibraryItem);
+            library.push('---');
+            if (this.state.gaiaGallery) {
+                library.push(toLibraryItem(gaiamodGalleryMore));
+                const locale = this.props.intl.locale;
+                library.push(
+                    ...this.state.gaiaGallery
+                        .map(i => translateGalleryItem(i, locale))
+                        .map(toLibraryItem)
+                );
+            } else if (this.state.gaiaGalleryError) {
+                library.push(toLibraryItem(gaiaGalleryError));
+            } else {
                 library.push(toLibraryItem(gaiaGalleryLoading));
             }
         }
