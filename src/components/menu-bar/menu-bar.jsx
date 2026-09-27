@@ -514,6 +514,7 @@ class MenuBar extends React.Component {
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
                             <img
+                            className={classNames(styles.scratchLogo, styles.clickable)}
                             src={logo}
                             alt="GaiaMod"
                             onClick={() => {
