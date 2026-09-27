@@ -1,5 +1,11 @@
 import messages from './tag-messages.js';
 export default [
+    {type: 'custom', intlLabel: messages.customextension, func: (library) => {
+        library.select('custom_extension');
+    } },	
+	
+    {type: 'divider'},
+	
     {tag: 'scratch', intlLabel: 'Scratch'},
     {tag: 'gm', intlLabel: 'GaiaMod'},
     {tag: 'pm', intlLabel: 'PenguinMod'},
@@ -24,10 +30,4 @@ export default [
 
     {tag: 'library', intlLabel: messages.library},
 
-    {type: 'divider'},
-
-    {type: 'title', intlLabel: 'Actions'},
-    {type: 'custom', intlLabel: messages.customextension, func: (library) => {
-        library.select('custom_extension');
-    } },
 ];
