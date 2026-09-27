@@ -402,7 +402,8 @@ export default [
                 id="pm.gui.extension.pmMotionExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion']
+        tags: ['pm', 'expansion'],
+        featured: true
     },
     {
         name: (
@@ -421,7 +422,8 @@ export default [
                 id="pm.gui.extension.pmEventsExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion']
+        tags: ['pm', 'expansion'],
+        featured: true
     },
     {
         name: (
@@ -440,7 +442,8 @@ export default [
                 id="pm.gui.extension.pmControlsExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion']
+        tags: ['pm', 'expansion'],
+        featured: true
     },
     {
         name: (
@@ -459,7 +462,8 @@ export default [
                 id="pm.gui.extension.pmSensingExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion', 'hardware']
+        tags: ['pm', 'expansion', 'hardware'],
+        featured: true
     },
     {
         name: (
@@ -478,7 +482,8 @@ export default [
                 id="pm.gui.extension.pmOperatorsExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion', 'math']
+        tags: ['pm', 'expansion', 'math'],
+        featured: true
     },
     {
         name: (
@@ -497,7 +502,8 @@ export default [
                 id="pm.gui.extension.jwArray.description"
             />
         ),
-        tags: ['pm', 'data', 'type']
+        tags: ['pm', 'data', 'type'],
+        featured: true
     },
     {
         name: (
@@ -516,7 +522,8 @@ export default [
                 id="pm.gui.extension.jwInt.description"
             />
         ),
-        tags: ['pm', 'math', 'type']
+        tags: ['pm', 'math', 'type'],
+        featured: true
     },
     {
         name: (
@@ -536,7 +543,8 @@ export default [
                 id="pm.gui.extension.dogeiscutObject.description"
             />
         ),
-        tags: ['pm', 'data', 'type']
+        tags: ['pm', 'data', 'type'],
+        featured: true
     },
     {
         name: (
@@ -555,7 +563,8 @@ export default [
                 id="pm.gui.extension.SPjavascriptV2.description"
             />
         ),
-        tags: ['pm', 'language']
+        tags: ['pm', 'language'],
+        featured: true
     },
     {
         name: (
@@ -574,7 +583,8 @@ export default [
                 id="pm.gui.extension.jwXML.description"
             />
         ),
-        tags: ['pm', 'data', 'type']
+        tags: ['pm', 'data', 'type'],
+        featured: true
     },
     {
         name: (
@@ -593,7 +603,8 @@ export default [
                 id="pm.gui.extension.jwClass.description"
             />
         ),
-        tags: ['pm', 'type']
+        tags: ['pm', 'type'],
+        featured: true
     },
     {
         name: (
@@ -612,7 +623,8 @@ export default [
                 id="pm.gui.extension.jwNum.description"
             />
         ),
-        tags: ['pm', 'math', 'type']
+        tags: ['pm', 'math', 'type'],
+        featured: true
     },
     {
         name: (
@@ -632,7 +644,8 @@ export default [
                 id="pm.gui.extension.jgTween.description"
             />
         ),
-        tags: ['pm', 'math']
+        tags: ['pm', 'math'],
+        featured: true
     },
     {
         name: (
@@ -651,7 +664,8 @@ export default [
                 id="pm.gui.extension.jwPromise.description"
             />
         ),
-        tags: ['pm', 'type']
+        tags: ['pm', 'type'],
+        featured: true
     },
     {
         name: (
@@ -670,7 +684,8 @@ export default [
                 id="pm.gui.extension.jwDebugger.description"
             />
         ),
-        tags: ['pm']
+        tags: ['pm'],
+        featured: true
     },
     {
         name: (
@@ -690,6 +705,7 @@ export default [
             />
         ),
         tags: ['pm', 'data'],
+        featured: true,
         internetConnectionRequired: true
     },
     {
@@ -709,7 +725,8 @@ export default [
                 id="pm.gui.extension.jwVector.description"
             />
         ),
-        tags: ['pm', 'math', 'type']
+        tags: ['pm', 'math', 'type'],
+        featured: true
     },
     {
         name: (
@@ -728,7 +745,8 @@ export default [
                 id="pm.gui.extension.jwFetch.description"
             />
         ),
-        tags: ['pm', 'internet']
+        tags: ['pm', 'internet'],
+        featured: true
     },
     {
         name: (
@@ -747,7 +765,8 @@ export default [
                 id="pm.gui.extension.jwScope.description"
             />
         ),
-        tags: ['pm']
+        tags: ['pm'],
+        featured: true
     },
     {
         name: (
@@ -766,7 +785,8 @@ export default [
                 id="pm.gui.extension.jwCamera.description"
             />
         ),
-        tags: ['pm', 'graphics', 'type']
+        tags: ['pm', 'graphics', 'type'],
+        featured: true
     },
     {
         name: (
@@ -785,7 +805,8 @@ export default [
                 id="pm.gui.extension.tempVars.description"
             />
         ),
-        tags: ['pm']
+        tags: ['pm'],
+        featured: true
     },
     {
         name: (
@@ -804,7 +825,8 @@ export default [
                 id="pm.gui.extension.jwTargets.description"
             />
         ),
-        tags: ['pm', 'type']
+        tags: ['pm', 'type'],
+        featured: true
     },
     {
         name: (
@@ -823,7 +845,8 @@ export default [
                 id="pm.gui.extension.SPspeechBubbles.description"
             />
         ),
-        tags: ['pm', 'graphics', 'expansion']
+        tags: ['pm', 'graphics', 'expansion'],
+        featured: true
     },
     {
         name: (
@@ -842,7 +865,8 @@ export default [
                 id="pm.gui.extension.jwPointer.description"
             />
         ),
-        tags: ['pm', 'data', 'type']
+        tags: ['pm', 'data', 'type'],
+        featured: true
     },
     {
         name: (
@@ -861,7 +885,8 @@ export default [
                 id="pm.gui.extension.jwPolygon.description"
             />
         ),
-        tags: ['pm', 'math', 'type']
+        tags: ['pm', 'math', 'type'],
+        featured: true
     },
     {
         name: (
@@ -880,7 +905,8 @@ export default [
                 id="pm.gui.extension.jgExtendedAudio.description"
             />
         ),
-        tags: ['pm', 'sound']
+        tags: ['pm', 'sound'],
+        featured: true
     },
     {
         name: (
@@ -899,7 +925,8 @@ export default [
                 id="pm.gui.extension.jwColor.description"
             />
         ),
-        tags: ['pm', 'graphics', 'type']
+        tags: ['pm', 'graphics', 'type'],
+        featured: true
     },
     {
         name: (
@@ -918,7 +945,8 @@ export default [
                 id="pm.gui.extension.jwLambda.description"
             />
         ),
-        tags: ['pm', 'type']
+        tags: ['pm', 'type'],
+        featured: true
     },
     {
         name: (
@@ -937,7 +965,8 @@ export default [
                 id="pm.gui.extension.jwProto.description"
             />
         ),
-        tags: ['pm']
+        tags: ['pm'],
+        featured: true
     },
     {
         name: (
@@ -956,7 +985,8 @@ export default [
                 id="pm.gui.extension.jgRuntime.description"
             />
         ),
-        tags: ['pm', 'data', 'internet']
+        tags: ['pm', 'data', 'internet'],
+        featured: true
     },
 	//
     {
