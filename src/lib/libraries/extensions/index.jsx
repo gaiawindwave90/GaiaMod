@@ -957,7 +957,7 @@ export default [
             />
         ),
         tags: ['pm', 'data', 'internet']
-    }
+    },
 	//
     {
         name: (
