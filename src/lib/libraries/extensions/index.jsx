@@ -55,6 +55,7 @@ import returnIcon from './custom/return.svg';
 import galleryIcon from './gallery/gallery.svg';
 
 import sharkpoolGalleryIcon from './sharkpool-gallery/gallery.svg';
+import gaiamodGalleryIcon from './gaiamod/gallery.png';
 
 export default [
     {
@@ -451,6 +452,77 @@ export const galleryError = {
     tags: ['tw', 'library'],
     featured: true
 };
+
+//
+export const gaiamodGalleryLoading = {
+    name: (
+        <FormattedMessage
+            defaultMessage="GaiaMod Extension Gallery"
+            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
+            id="tw.gaiamodGallery.name"
+        />
+    ),
+    href: 'https://gaiawindwave90.github.io/gm-extensions/',
+    extensionId: 'gaiaGallery',
+    iconURL: gaiamodGalleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Loading extension gallery..."
+            description="Appears while loading extension list from the custom extension gallery"
+            id="tw.gaiamodGallery.loading"
+        />
+    ),
+    tags: ['gm', 'library'],
+    featured: true
+};
+
+export const gaiamodGalleryMore = {
+    name: (
+        <FormattedMessage
+            defaultMessage="GaiaMod Extension Gallery"
+            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
+            id="tw.gaiamodGallery.name"
+        />
+    ),
+    href: 'https://gaiawindwave90.github.io/gm-extensions/',
+    extensionId: 'gaiaGallery',
+    iconURL: gaiamodGalleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Learn more about extensions at gaiawindwave90.github.io/gm-extensions."
+            description="Appears after the extension list from the gallery was loaded successfully"
+            id="tw.gaiamodGallery.more"
+        />
+    ),
+    tags: ['gm', 'library'],
+    featured: true
+};
+
+export const gaiamodGalleryError = {
+    name: (
+        <FormattedMessage
+            defaultMessage="GaiaMod Extension Gallery"
+            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
+            id="tw.gaiamodGallery.name"
+        />
+    ),
+    href: 'https://gaiawindwave90.github.io/gm-extensions/',
+    extensionId: 'gaiaGallery',
+    iconURL: gaiamodGalleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Error loading extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions."
+            description="Appears when an error occurred loading extension list from the custom extension gallery"
+            id="tw.gaiamodGallery.error"
+        />
+    ),
+    tags: ['gm', 'library'],
+    featured: true
+};
+//
 
 export const sharkpoolGallery = {
     name: (
