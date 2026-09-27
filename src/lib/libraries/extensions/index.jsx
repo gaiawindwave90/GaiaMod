@@ -1032,7 +1032,7 @@ const gallerySourceDisplay = {
         name: 'SharkPool\'s Extension Gallery',
         href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
         iconURL: spIcon,
-        tag: 'sp'
+        tag: 'sharkpool'
     }
 };
 
