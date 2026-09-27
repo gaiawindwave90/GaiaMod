@@ -4,35 +4,51 @@ import React from 'react';
 import VM from 'scratch-vm';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
-import twLibraryMixin from '../lib/libraries/tw-library-mixin';
+import {manuallyTrustExtension} from './tw-security-manager.jsx';
 
 import extensionLibraryContent, {
-    galleryError,
-    galleryLoading,
-    galleryMore,
-	gaiaGalleryError,
-    gaiaGalleryLoading,
-    gaiaGalleryMore,
-    sharkpoolGallery,
-    penguinmodGallery
+    galleryStatusItems
 } from '../lib/libraries/extensions/index.jsx';
-import { isTrustedExtension } from "./tw-security-manager.jsx";
-import extensionTags from '../lib/libraries/extension-tags';
+import extensionTags from '../lib/libraries/tw-extension-tags';
+import {
+    addPackURL,
+    getCachedPack,
+    getExtensionId,
+    getIndividualExtensions,
+    getPackURLs,
+    removePackURL,
+    resolveURL,
+    setCachedPack,
+    setIndividualExtensions,
+    setPackURLs,
+    validatePack
+} from '../lib/extension-packs';
 
 import LibraryComponent from '../components/library/library.jsx';
+import ExtensionPackManager from '../components/nb-extension-pack-manager/extension-pack-manager.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
-import extensions from '../lib/libraries/extensions/index.jsx';
+import defaultExtensionBanner from '../lib/libraries/extensions/custom/custom.svg';
+
+const gallerySources = [
+    {
+        id: 'gaiamod',
+        baseURL: 'https://gaiawindwave90.github.io/gm-extensions/',
+        metadataURL: 'https://gaiawindwave90.github.io/gm-extensions/generated-metadata/extensions-v0.json',
+        tag: 'gm'
+    },
+    {
+        id: 'turbowarp',
+        baseURL: 'https://extensions.turbowarp.org/',
+        metadataURL: 'https://extensions.turbowarp.org/generated-metadata/extensions-v0.json',
+        tag: 'tw'
+    }
+];
 
 const messages = defineMessages({
     extensionTitle: {
         defaultMessage: 'Choose an Extension',
         description: 'Heading for the extension library',
         id: 'gui.extensionLibrary.chooseAnExtension'
-    },
-    header: {
-        defaultMessage: 'Extensions',
-        description: 'Header for extension library',
-        id: 'pm.gui.extensionLibrary.header'
     }
 });
 
@@ -40,7 +56,6 @@ const toLibraryItem = extension => {
     if (typeof extension === 'object') {
         return ({
             rawURL: extension.iconURL || extensionIcon,
-            featured: true,
             ...extension
         });
     }
@@ -53,106 +68,172 @@ const translateGalleryItem = (extension, locale) => ({
     description: extension.descriptionTranslations[locale] || extension.description
 });
 
-let cachedGallery = null;
-let cachedGaiaGallery = null;
-let externalGalleryListenerAttached = false;
+const mapGalleryExtension = (extension, source) => ({
+    name: extension.name,
+    nameTranslations: extension.nameTranslations || {},
+    description: extension.description,
+    descriptionTranslations: extension.descriptionTranslations || {},
+    extensionId: extension.id,
+    extensionURL: `${source.baseURL}${extension.slug}.js`,
+    iconURL: extension.image ? `${source.baseURL}${extension.image}` : defaultExtensionBanner,
+    tags: [source.tag],
+    credits: [
+        ...(extension.original || []),
+        ...(extension.by || [])
+    ].map(credit => {
+        if (credit.link) {
+            return (
+                <a
+                    href={credit.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    key={credit.name}
+                >
+                    {credit.name}
+                </a>
+            );
+        }
+        return credit.name;
+    }),
+    docsURI: extension.docs ? `${source.baseURL}${extension.slug}` : null,
+    samples: extension.samples ? extension.samples.map(sample => ({
+        href: `${process.env.ROOT}editor?project_url=${source.baseURL}samples/${encodeURIComponent(sample)}.sb3`,
+        text: sample
+    })) : null,
+    incompatibleWithScratch: !extension.scratchCompatible,
+    featured: true
+});
 
-const fetchLibrary = async () => {
-    const res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
-    if (!res.ok) {
-        throw new Error(`HTTP status ${res.status}`);
+const mapPackExtension = (extension, pack) => ({
+    name: extension.name,
+    nameTranslations: extension.nameTranslations || {},
+    description: extension.description || '',
+    descriptionTranslations: extension.descriptionTranslations || {},
+    extensionId: extension.id,
+    extensionURL: resolveURL(
+        extension.slug.endsWith('.js') ? extension.slug : `${extension.slug}.js`,
+        pack.information.source
+    ),
+    iconURL: extension.image ? resolveURL(extension.image, pack.information.source) : defaultExtensionBanner,
+    tags: [pack.information.tag],
+    credits: [
+        ...(extension.original || []),
+        ...(extension.by || [])
+    ].map(credit => (credit.link ? (
+        <a
+            href={credit.link}
+            target="_blank"
+            rel="noreferrer"
+            key={credit.name}
+        >
+            {credit.name}
+        </a>
+    ) : credit.name)),
+    docsURI: extension.docs ? resolveURL(extension.slug, pack.information.source) : null,
+    samples: extension.samples ? extension.samples.map(sample => ({
+        href: `${process.env.ROOT}editor?project_url=${encodeURIComponent(
+            resolveURL(`samples/${sample}.sb3`, pack.information.source)
+        )}`,
+        text: sample
+    })) : null,
+    incompatibleWithScratch: !extension.scratchCompatible,
+    featured: true
+});
+
+const preparePack = (packURL, pack, error) => ({
+    url: packURL,
+    name: pack.information.name,
+    tag: pack.information.tag,
+    extensions: pack.extensions.map(extension => mapPackExtension(extension, pack)),
+    error
+});
+
+const fetchPack = async packURL => {
+    try {
+        const res = await fetch(packURL);
+        if (!res.ok) throw new Error(`[extension pack] HTTP status ${res.status}`);
+        const pack = validatePack(await res.json(), packURL);
+        setCachedPack(packURL, pack);
+        return preparePack(packURL, pack, null);
+    } catch (error) {
+        const cachedPack = getCachedPack(packURL);
+        if (!cachedPack) throw error;
+        const pack = validatePack(cachedPack, packURL);
+        log.warn(`[extension pack] Using saved copy of ${packURL}`, error);
+        return preparePack(packURL, pack, 'Offline — using saved copy');
     }
-    const data = await res.json();
-    return data.extensions.map(extension => ({
-        name: extension.name,
-        nameTranslations: extension.nameTranslations || {},
-        description: extension.description,
-        descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: extension.id,
-        extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
-        iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
-        tags: 'tw',
-        credits: [
-            ...(extension.original || []),
-            ...(extension.by || [])
-        ].map(credit => {
-            if (credit.link) {
-                return (
-                    <a
-                        href={credit.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        key={credit.name}
-                    >
-                        {credit.name}
-                    </a>
-                );
-            }
-            return credit.name;
-        }),
-        docsURI: extension.docs ? `https://extensions.turbowarp.org/${extension.slug}` : null,
-        samples: extension.samples ? extension.samples.map(sample => ({
-            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
-            text: sample
-        })) : null,
-        incompatibleWithScratch: !extension.scratchCompatible,
-        featured: true
-    }))
-        .map(extension => twLibraryMixin[extension.extensionId] ?
-            {...extension, ...twLibraryMixin[extension.extensionId]} :
-            (console.debug(`no mixin for ${extension.extensionId}`) || extension)
-        )
-        .map(extension => ({...extension, tags: [...extension.tags, "tw"]}))
-        .filter(extension => !extension.hide);
 };
 
-const fetchGaiaLibrary = async () => {
-    const res = await fetch('https://gaiawindwave90.github.io/gm-extensions/generated-metadata/extensions-v0.json');
-    if (!res.ok) {
-        throw new Error(`HTTP status ${res.status}`);
-    }
-    const data = await res.json();
-    return data.extensions.map(extension => ({
-        name: extension.name,
-        nameTranslations: extension.nameTranslations || {},
-        description: extension.description,
-        descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: extension.id,
-        extensionURL: `https://gaiawindwave90.github.io/gm-extensions/${extension.slug}.js`,
-        iconURL: `https://gaiawindwave90.github.io/gm-extensions/${extension.image || 'images/unknown.svg'}`,
-        tags: 'gm',
-        credits: [
-            ...(extension.original || []),
-            ...(extension.by || [])
-        ].map(credit => {
-            if (credit.link) {
-                return (
-                    <a
-                        href={credit.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        key={credit.name}
-                    >
-                        {credit.name}
-                    </a>
-                );
+const fetchSavedPacks = async () => {
+    const packURLs = getPackURLs();
+    const results = await Promise.allSettled(packURLs.map(fetchPack));
+    const packs = [];
+    results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+            packs.push(result.value);
+        } else {
+            log.error(result.reason);
+            packs.push({
+                url: packURLs[index],
+                name: packURLs[index],
+                tag: '',
+                extensions: [],
+                error: result.reason.message
+            });
+        }
+    });
+    return packs;
+};
+
+let cachedPacks = [];
+const initialPackLoad = fetchSavedPacks().then(packs => {
+    const savedPackURLs = new Set(getPackURLs());
+    cachedPacks = packs.filter(pack => savedPackURLs.has(pack.url));
+    return packs;
+});
+
+let cachedGalleryBySource = null;
+
+const fetchLibrary = async () => {
+    const results = await Promise.allSettled(gallerySources.map(async source => {
+        const res = await fetch(source.metadataURL);
+        if (!res.ok) {
+            throw new Error(`[${source.id}] HTTP status ${res.status}`);
+        }
+        const data = await res.json();
+        return data.extensions.map(extension => mapGalleryExtension(extension, source));
+    }));
+
+    const extensionIds = new Set();
+    const galleryBySource = {};
+
+    for (const [index, result] of results.entries()) {
+        const source = gallerySources[index];
+
+        if (result.status === 'fulfilled') {
+            const extensions = [];
+            for (const extension of result.value) {
+                // Keep first occurrence, so NitroBolt wins when IDs overlap.
+                if (!extensionIds.has(extension.extensionId)) {
+                    extensionIds.add(extension.extensionId);
+                    extensions.push(extension);
+                }
             }
-            return credit.name;
-        }),
-        docsURI: extension.docs ? `https://extensions.turbowarp.org/${extension.slug}` : null,
-        samples: extension.samples ? extension.samples.map(sample => ({
-            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
-            text: sample
-        })) : null,
-        incompatibleWithScratch: !extension.scratchCompatible,
-        featured: true
-    }))
-        .map(extension => twLibraryMixin[extension.extensionId] ?
-            {...extension, ...twLibraryMixin[extension.extensionId]} :
-            (console.debug(`no mixin for ${extension.extensionId}`) || extension)
-        )
-        .map(extension => ({...extension, tags: [...extension.tags, "tw"]}))
-        .filter(extension => !extension.hide);
+            galleryBySource[source.id] = {
+                status: 'success',
+                extensions
+            };
+        } else {
+            log.error(result.reason);
+            galleryBySource[source.id] = {
+                status: 'error',
+                error: result.reason,
+                extensions: []
+            };
+        }
+    }
+
+    return galleryBySource;
 };
 
 class ExtensionLibrary extends React.PureComponent {
@@ -160,47 +241,40 @@ class ExtensionLibrary extends React.PureComponent {
         super(props);
         bindAll(this, [
             'handleItemSelect',
-            'wrapperEventHandler',
+            'handleAddPack',
+            'handleAddExtension',
+            'handleRemoveExtension',
+            'handleRemovePack',
+            'handleReorderExtensions',
+            'handleReorderPacks',
+            'handleOpenManager',
+            'handleCloseManager'
         ]);
-        this.pendingExtensions = new Set();
         this.state = {
-            gallery: cachedGallery,
-            galleryError: null,
+            galleryBySource: cachedGalleryBySource,
             galleryTimedOut: false,
-            gaiaGallery: cachedGaiaGallery,
-            gaiaGalleryError: null,
-            gaiaGalleryTimedOut: false,
+            packs: cachedPacks,
+            individualExtensions: getIndividualExtensions(),
+            managerVisible: false,
+            managerError: ''
         };
     }
     componentDidMount () {
-        if (!externalGalleryListenerAttached) {
-            window.addEventListener('message', this.wrapperEventHandler);
-        }
-		if (!this.state.gaiaGallery) {
-            const timeout = setTimeout(() => {
-                this.setState({
-                    gaiaGalleryTimedOut: true
-                });
-            }, 750);
-
-            fetchGaiaLibrary()
-                .then(gallery => {
-                    cachedGaiaGallery = gaiaGallery;
-                    this.setState({
-                        gaiaGallery
-                    });
-                    clearTimeout(timeout);
-                })
-                .catch(error => {
-                    log.error(error);
-                    this.setState({
-                        gaiaGalleryError: error
-                    });
-                    clearTimeout(timeout);
-                });
-        }
-		//TurboWarp
-        if (!this.state.gallery) {
+        initialPackLoad.then(packs => {
+            this.setState(state => {
+                const savedPackURLs = getPackURLs();
+                const packsByURL = new Map([
+                    ...packs.map(pack => [pack.url, pack]),
+                    ...state.packs.map(pack => [pack.url, pack])
+                ]);
+                const currentPacks = savedPackURLs
+                    .map(url => packsByURL.get(url))
+                    .filter(Boolean);
+                cachedPacks = currentPacks;
+                return {packs: currentPacks};
+            });
+        });
+        if (!this.state.galleryBySource) {
             const timeout = setTimeout(() => {
                 this.setState({
                     galleryTimedOut: true
@@ -208,21 +282,102 @@ class ExtensionLibrary extends React.PureComponent {
             }, 750);
 
             fetchLibrary()
-                .then(gallery => {
-                    cachedGallery = gallery;
+                .then(galleryBySource => {
+                    cachedGalleryBySource = galleryBySource;
                     this.setState({
-                        gallery
+                        galleryBySource
                     });
                     clearTimeout(timeout);
                 })
                 .catch(error => {
                     log.error(error);
-                    this.setState({
-                        galleryError: error
-                    });
                     clearTimeout(timeout);
                 });
         }
+    }
+    async handleAddPack (value) {
+        if (!value) return;
+        try {
+            const url = new URL(value.trim()).href;
+            const pack = await fetchPack(url);
+            addPackURL(url);
+            this.setState(state => ({
+                packs: [...state.packs.filter(item => item.url !== url), pack],
+                managerError: ''
+            }), () => {
+                cachedPacks = this.state.packs;
+            });
+        } catch (error) {
+            log.error(error);
+            this.setState({managerError: `Could not add extension pack: ${error.message}`});
+        }
+    }
+    handleRemovePack (url) {
+        removePackURL(url);
+        this.setState(state => ({packs: state.packs.filter(item => item.url !== url)}), () => {
+            cachedPacks = this.state.packs;
+        });
+    }
+    async handleAddExtension (extension) {
+        const name = extension.name.trim();
+        try {
+            if (!name) throw new Error('Enter a display name.');
+            let url;
+            let source;
+            if (extension.type === 'url') {
+                url = new URL(extension.url.trim()).href;
+                if (!/^https?:$/.test(new URL(url).protocol)) throw new Error('Enter an HTTP(S) extension URL.');
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Extension returned HTTP ${response.status}.`);
+                source = await response.text();
+            } else {
+                source = extension.source;
+                if (!source) throw new Error('Choose a JavaScript file or paste extension code.');
+                url = `data:application/javascript,${encodeURIComponent(source)}`;
+            }
+            const id = getExtensionId(source);
+            const item = {name, id, url, sourceType: extension.type, fileName: extension.fileName};
+            const individualExtensions = [
+                ...this.state.individualExtensions.filter(oldItem => oldItem.id !== id && oldItem.url !== url),
+                item
+            ];
+            setIndividualExtensions(individualExtensions);
+            this.setState({individualExtensions, managerError: ''});
+        } catch (error) {
+            this.setState({managerError: `Could not add extension: ${error.message}`});
+        }
+    }
+    handleRemoveExtension (url) {
+        this.setState(state => {
+            const individualExtensions = state.individualExtensions.filter(item => item.url !== url);
+            setIndividualExtensions(individualExtensions);
+            return {individualExtensions};
+        });
+    }
+    handleReorderPacks (fromIndex, toIndex) {
+        this.setState(state => {
+            const packs = [...state.packs];
+            const [pack] = packs.splice(fromIndex, 1);
+            packs.splice(toIndex, 0, pack);
+            setPackURLs(packs.map(item => item.url));
+            cachedPacks = packs;
+            return {packs};
+        });
+    }
+    handleReorderExtensions (fromIndex, toIndex) {
+        this.setState(state => {
+            const individualExtensions = [...state.individualExtensions];
+            const [extension] = individualExtensions.splice(fromIndex, 1);
+            individualExtensions.splice(toIndex, 0, extension);
+            setIndividualExtensions(individualExtensions);
+            return {individualExtensions};
+        });
+    }
+    handleOpenManager () {
+        this.setState({managerVisible: true, managerError: ''});
+    }
+    handleCloseManager () {
+        this.setState({managerVisible: false, managerError: ''});
     }
     handleItemSelect (item) {
         if (item.href) {
@@ -230,6 +385,7 @@ class ExtensionLibrary extends React.PureComponent {
         }
 
         const extensionId = item.extensionId;
+
         if (extensionId === 'custom_extension') {
             this.props.onOpenCustomExtensionModal();
             return;
@@ -237,6 +393,7 @@ class ExtensionLibrary extends React.PureComponent {
 
         const url = item.extensionURL ? item.extensionURL : extensionId;
         if (!item.disabled) {
+            if (item.extensionURL) manuallyTrustExtension(url);
             if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
                 this.props.onCategorySelected(extensionId);
             } else {
@@ -252,117 +409,106 @@ class ExtensionLibrary extends React.PureComponent {
             }
         }
     }
-    async wrapperEventHandler(e) {
-        /**
-         * External gallery support.
-         * 
-         * Supports galleries outside the editor to automatically load extensions without
-         * having to manually input the extension code.
-         */
-        // Don't recursively try to run this event.
-        if (e.origin === window.origin) return;
-
-        // 'isTrustedExtension' checks the extension url.
-        if (!isTrustedExtension(e.origin)) {
-            e.source.postMessage({
-                p4: {
-                    type: 'error',
-                    error: 'not_trusted'
-                }
-            }, e.origin);
-            return;
-        }
-
-        const extensionSource = e.data.loadExt;
-        if (!extensionSource || typeof extensionSource !== 'string') {
-            e.source.postMessage({
-                p4: {
-                    type: 'error',
-                    error: 'no_extension_source_string'
-                }
-            }, e.origin);
-            return;
-        }
-
-        // Load the extension like any other custom extension url (this means sandboxing for some urls)
-        if (
-            this.props.vm.extensionManager.isExtensionLoaded(extensionSource) ||
-            this.props.vm.extensionManager.workerURLs.includes(extensionSource)
-        ) {
-            this.props.onCategorySelected(extensionSource);
-            e.source.postMessage({
-                p4: {
-                    type: 'success'
-                }
-            }, e.origin);
-        } else {
-            if (this.pendingExtensions.has(extensionSource)) {
-                // Prevent dual loading.
-                return;
-            }
-
-            this.pendingExtensions.add(extensionSource);
-            this.props.vm.extensionManager.loadExtensionURL(extensionSource)
-                .then(() => {
-                    this.pendingExtensions.delete(extensionSource);
-                    this.props.onCategorySelected(extensionSource);
-                    e.source.postMessage({
-                        p4: {
-                            type: 'success'
-                        }
-                    }, e.origin);
-                })
-                .catch(err => {
-                    log.error(err);
-                    // The source website is expected to display the error
-                    e.source.postMessage({
-                        p4: {
-                            type: 'error',
-                            error: 'couldnt_load',
-                            pmerror: String(err.stack ? err.stack : err)
-                        }
-                    }, e.origin);
-                });
-        }
-    }
     render () {
         let library = null;
-        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
+        let tags = extensionTags;
+        if (this.state.galleryBySource || this.state.galleryTimedOut) {
+            library = extensionLibraryContent.map(toLibraryItem);
+            const locale = this.props.intl.locale;
+
+            tags = [
+                ...extensionTags,
+                {tag: 'individual', intlLabel: 'Individual'},
+                ...this.state.packs
+                    .filter(pack => pack.tag)
+                    .map(pack => ({tag: pack.tag, intlLabel: pack.name}))
+            ];
+
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
-            library = library.concat(penguinmodGallery.map(toLibraryItem));
-            library.push('---');
-            if (this.state.gallery) {
-                library.push(toLibraryItem(galleryMore));
-                library.push(toLibraryItem(sharkpoolGallery));
-                const locale = this.props.intl.locale;
-                library.push(
-                    ...this.state.gallery
-                        .map(i => translateGalleryItem(i, locale))
-                        .map(toLibraryItem)
-                );
-            } else if (this.state.galleryError) {
-                library.push(toLibraryItem(galleryError));
-            } else {
-                library.push(toLibraryItem(galleryLoading));
+
+            for (const source of gallerySources) {
+                const sourceGallery = this.state.galleryBySource ? this.state.galleryBySource[source.id] : null;
+                const sourceStatusItems = galleryStatusItems[source.id];
+
+                const extensionsToExclude = [
+                    'faceSensing',
+                    'fullscreen0419',
+                    'images',
+                    'lmsCast',
+                    'lmscomments',
+                    'lmsHackedBlocks',
+                    'lmsmcutils',
+                    'lmsutilsblocks',
+                    'RixxyX',
+                    'ShovelUtils',
+                    'skyhigh173JSON'
+                ];
+                const sourceExtensionsToExclude = source.id === 'turbowarp' ? [
+                    'penP',
+                    'xeltallivclipblend'
+                ] : [];
+
+                if (sourceGallery && sourceGallery.status === 'success') {
+                    library.push(toLibraryItem(sourceStatusItems.more));
+                    library.push(
+                        ...sourceGallery.extensions
+                            .filter(i => !extensionsToExclude.includes(i.extensionId) &&
+                                !sourceExtensionsToExclude.includes(i.extensionId))
+                            .map(i => translateGalleryItem(i, locale))
+                            .map(toLibraryItem)
+                    );
+                } else if (sourceGallery && sourceGallery.status === 'error') {
+                    library.push(toLibraryItem(sourceStatusItems.error));
+                } else {
+                    library.push(toLibraryItem(sourceStatusItems.loading));
+                }
+
+                library.push('---');
+            }
+
+            if (this.state.individualExtensions.length) {
+                library.push(...this.state.individualExtensions.map(extension => toLibraryItem({
+                    name: extension.name,
+                    description: '',
+                    extensionId: extension.id,
+                    extensionURL: extension.url,
+                    iconURL: defaultExtensionBanner,
+                    tags: ['individual'],
+                    incompatibleWithScratch: true,
+                    featured: true
+                })));
+                library.push('---');
+            }
+
+            for (const pack of this.state.packs) {
+                if (!pack.extensions.length) continue;
+                library.push(...pack.extensions
+                    .map(i => translateGalleryItem(i, locale))
+                    .map(toLibraryItem));
+                library.push('---');
+            }
+
+            if (library[library.length - 1] === '---') {
+                library.pop();
             }
         }
-		if (this.state.gaiaGallery || this.state.gaiaGalleryError || this.state.gaiaGalleryTimedOut) {
-            library = extensionLibraryContent.map(toLibraryItem);
-            library.push('---');
-            if (this.state.gaiaGallery) {
-                library.push(toLibraryItem(gaiaGalleryMore));
-                const locale = this.props.intl.locale;
-                library.push(
-                    ...this.state.gaiaGallery
-                        .map(i => translateGalleryItem(i, locale))
-                        .map(toLibraryItem)
-                );
-            } else if (this.state.gaiaGalleryError) {
-                library.push(toLibraryItem(gaiaGalleryError));
-            } else {
-                library.push(toLibraryItem(gaiaGalleryLoading));
-            }
+
+        if (this.state.managerVisible) {
+            return (
+                <ExtensionPackManager
+                    error={this.state.managerError}
+                    extensions={this.state.individualExtensions}
+                    packs={this.state.packs}
+                    onAddExtension={this.handleAddExtension}
+                    onAddPack={this.handleAddPack}
+                    onClose={this.handleCloseManager}
+                    onRemoveExtension={this.handleRemoveExtension}
+                    onRemovePack={this.handleRemovePack}
+                    onReorderExtensions={this.handleReorderExtensions}
+                    onReorderPacks={this.handleReorderPacks}
+                />
+            );
         }
 
         return (
@@ -371,9 +517,9 @@ class ExtensionLibrary extends React.PureComponent {
                 filterable
                 persistableKey="extensionId"
                 id="extensionLibrary"
-                tags={extensionTags}
+                tags={tags}
+                onTagManager={this.handleOpenManager}
                 title={this.props.intl.formatMessage(messages.extensionTitle)}
-                header={this.props.intl.formatMessage(messages.header)}
                 visible={this.props.visible}
                 onItemSelected={this.handleItemSelect}
                 onRequestClose={this.props.onRequestClose}
@@ -385,7 +531,6 @@ class ExtensionLibrary extends React.PureComponent {
 ExtensionLibrary.propTypes = {
     intl: intlShape.isRequired,
     onCategorySelected: PropTypes.func,
-    onEnableProcedureReturns: PropTypes.func,
     onOpenCustomExtensionModal: PropTypes.func,
     onRequestClose: PropTypes.func,
     visible: PropTypes.bool,
