@@ -7,6 +7,9 @@ import musicInsetIconURL from './music/music-small.svg';
 import penIconURL from './pen/pen.png';
 import penInsetIconURL from './pen/pen-small.svg';
 
+import cameraIconURL from './camera/camera.svg';
+import cameraInsetIconURL from './camera/camera-small.png';
+
 import videoSensingIconURL from './videoSensing/video-sensing.png';
 import videoSensingInsetIconURL from './videoSensing/video-sensing-small.svg';
 
@@ -54,10 +57,32 @@ import customExtensionIcon from './custom/custom.svg';
 import returnIcon from './custom/return.svg';
 import galleryIcon from './gallery/gallery.svg';
 
-import sharkpoolGalleryIcon from './sharkpool-gallery/gallery.svg';
-import gaiamodGalleryIcon from './gaiamod/gallery.png';
+import spIcon from './sharkpool-gallery/gallery.svg';
+import gmIcon from './gaiamod/gallery.png';;
+import {APP_NAME} from '../../brand';
 
 export default [
+     {
+        name: (
+            <FormattedMessage
+                defaultMessage="Custom Extension"
+                description="Name of library item to load a custom extension from a remote source"
+                id="tw.customExtension.name"
+            />
+        ),
+        extensionId: 'custom_extension',
+        iconURL: customExtensionIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Load custom extensions from URLs, files, or JavaScript source code."
+                description="Description of library item to load a custom extension from a custom source"
+                id="tw.customExtension.description"
+            />
+        ),
+        tags: ['gm'],
+        featured: true
+        // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
+    }
     {
         name: (
             <FormattedMessage
@@ -76,7 +101,7 @@ export default [
                 id="gui.extension.music.description"
             />
         ),
-        tags: ['scratch', 'sound'],
+        tags: ['scratch'],
         featured: true
     },
     {
@@ -97,7 +122,7 @@ export default [
                 id="gui.extension.pen.description"
             />
         ),
-        tags: ['scratch', 'graphics'],
+        tags: ['scratch'],
         featured: true
     },
     {
@@ -118,7 +143,7 @@ export default [
                 id="gui.extension.videosensing.description"
             />
         ),
-        tags: ['scratch', 'graphics'],
+        tags: ['scratch'],
         featured: true
     },
     {
@@ -140,7 +165,7 @@ export default [
                 id="tw.extension.faceSensing.description"
             />
         ),
-        tags: ['scratch', 'graphics'],
+        tags: ['scratch'],
         featured: true
     },
     {
@@ -162,7 +187,7 @@ export default [
                 id="gui.extension.text2speech.description"
             />
         ),
-        tags: ['scratch', 'sound'],
+        tags: ['scratch'],
         featured: true,
         internetConnectionRequired: true
     },
@@ -202,7 +227,7 @@ export default [
                 id="gui.extension.makeymakey.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true
     },
     {
@@ -218,7 +243,7 @@ export default [
                 id="gui.extension.microbit.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true,
         disabled: false,
         bluetoothRequired: true,
@@ -249,7 +274,7 @@ export default [
                 id="gui.extension.ev3.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true,
         disabled: false,
         bluetoothRequired: true,
@@ -280,7 +305,7 @@ export default [
                 id="gui.extension.boost.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true,
         disabled: false,
         bluetoothRequired: true,
@@ -312,7 +337,7 @@ export default [
                 id="gui.extension.wedo2.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true,
         disabled: false,
         bluetoothRequired: true,
@@ -344,7 +369,7 @@ export default [
                 id="gui.extension.gdxfor.description"
             />
         ),
-        tags: ['scratch', 'hardware'],
+        tags: ['scratch'],
         featured: true,
         disabled: false,
         bluetoothRequired: true,
@@ -362,193 +387,8 @@ export default [
         ),
         helpLink: 'https://scratch.mit.edu/vernier'
     },
-    {
-        name: (
-            <FormattedMessage
-                defaultMessage="Custom Extension"
-                description="Name of library item to load a custom extension from a remote source"
-                id="tw.customExtension.name"
-            />
-        ),
-        extensionId: 'custom_extension',
-        iconURL: customExtensionIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Load custom extensions from URLs, files, or JavaScript source code."
-                description="Description of library item to load a custom extension from a custom source"
-                id="tw.customExtension.description"
-            />
-        ),
-        tags: [],
-        featured: true
-    }
-];
-
-export const galleryLoading = {
-    name: (
-        <FormattedMessage
-            defaultMessage="TurboWarp Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
-            id="tw.extensionGallery.name"
-        />
-    ),
-    href: 'https://extensions.turbowarp.org/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Loading extension gallery..."
-            description="Appears while loading extension list from the custom extension gallery"
-            id="tw.extensionGallery.loading"
-        />
-    ),
-    tags: ['tw', 'library'],
-    featured: true
-};
-
-export const galleryMore = {
-    name: (
-        <FormattedMessage
-            defaultMessage="TurboWarp Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
-            id="tw.extensionGallery.name"
-        />
-    ),
-    href: 'https://extensions.turbowarp.org/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at extensions.turbowarp.org."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="tw.extensionGallery.more"
-        />
-    ),
-    tags: ['tw', 'library'],
-    featured: true
-};
-
-export const galleryError = {
-    name: (
-        <FormattedMessage
-            defaultMessage="TurboWarp Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
-            id="tw.extensionGallery.name"
-        />
-    ),
-    href: 'https://extensions.turbowarp.org/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit extensions.turbowarp.org to find more extensions."
-            description="Appears when an error occurred loading extension list from the custom extension gallery"
-            id="tw.extensionGallery.error"
-        />
-    ),
-    tags: ['tw', 'library'],
-    featured: true
-};
-
-//
-export const gaiaGalleryLoading = {
-    name: (
-        <FormattedMessage
-            defaultMessage="GaiaMod Extension Gallery"
-            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
-            id="tw.gaiamodGallery.name"
-        />
-    ),
-    href: 'https://gaiawindwave90.github.io/gm-extensions/',
-    extensionId: 'gaiaGallery',
-    iconURL: gaiamodGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Loading extension gallery..."
-            description="Appears while loading extension list from the custom extension gallery"
-            id="tw.gaiamodGallery.loading"
-        />
-    ),
-    tags: ['gm', 'library'],
-    featured: true
-};
-
-export const gaiaGalleryMore = {
-    name: (
-        <FormattedMessage
-            defaultMessage="GaiaMod Extension Gallery"
-            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
-            id="tw.gaiamodGallery.name"
-        />
-    ),
-    href: 'https://gaiawindwave90.github.io/gm-extensions/',
-    extensionId: 'gaiaGallery',
-    iconURL: gaiamodGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at gaiawindwave90.github.io/gm-extensions."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="tw.gaiamodGallery.more"
-        />
-    ),
-    tags: ['gm', 'library'],
-    featured: true
-};
-
-export const gaiaGalleryError = {
-    name: (
-        <FormattedMessage
-            defaultMessage="GaiaMod Extension Gallery"
-            description="Name of gaiawindwave90.github.io/gm-extensions in extension library"
-            id="tw.gaiamodGallery.name"
-        />
-    ),
-    href: 'https://gaiawindwave90.github.io/gm-extensions/',
-    extensionId: 'gaiaGallery',
-    iconURL: gaiamodGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions."
-            description="Appears when an error occurred loading extension list from the custom extension gallery"
-            id="tw.gaiamodGallery.error"
-        />
-    ),
-    tags: ['gm', 'library'],
-    featured: true
-};
-//
-
-export const sharkpoolGallery = {
-    name: (
-        <FormattedMessage
-            defaultMessage="SharkPool's Extension Gallery"
-            description="Name of sharkpools-extensions.vercel.app/ in extension library"
-            id="pm.sharkpoolGallery.name"
-        />
-    ),
-    href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
-    extensionId: 'sharkpool-gallery',
-    iconURL: sharkpoolGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
-            description="Name for the sharkpoolGallery gallery"
-            id="pm.sharkpoolGallery.more"
-        />
-    ),
-    tags: ['sharkpool', 'library'],
-    featured: true
-};
-
-export const penguinmodGallery = [
-    {
+	//PenguinMod!
+	{
         name: (
             <FormattedMessage
                 defaultMessage="Motion Expansion"
@@ -1121,4 +961,81 @@ export const penguinmodGallery = [
         ),
         tags: ['pm', 'data', 'internet']
     }
-]
+	//
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="TurboWarp Blocks"
+                description="Name of the strange 'TurboWarp Blocks' extension"
+                id="tw.twExtension.name"
+                values={{
+                    APP_NAME
+                }}
+            />
+        ),
+        extensionId: 'tw',
+        iconURL: smIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Weird new blocks. Replaced by sensing category in blocks."
+                description="Description of the strange 'TurboWarp Blocks' extension"
+                id="tw.twExtension.description"
+            />
+        ),
+        incompatibleWithScratch: true,
+        tags: ['tw'],
+        featured: true
+    }
+];
+
+const gallerySourceDisplay = {
+    gaiamod: {
+        name: 'GaiaMod Extension Gallery',
+        href: 'https://gaiawindwave90.github.io/gm-extensions/',
+        iconURL: gmIcon,
+        tag: 'gm'
+    },
+    turbowarp: {
+        name: 'TurboWarp Extension Gallery',
+        href: 'https://extensions.turbowarp.org/',
+        iconURL: twIcon,
+        tag: 'tw'
+    },
+	sharkpool: {
+        name: 'SharkPool's Extension Gallery',
+        href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
+        iconURL: spIcon,
+        tag: 'sp'
+    }
+};
+
+const createGalleryStatusItem = (sourceId, description) => {
+    const source = gallerySourceDisplay[sourceId];
+    return {
+        name: source.name,
+        href: source.href,
+        extensionId: `gallery_${sourceId}`,
+        iconURL: source.iconURL,
+        description,
+        tags: [source.tag],
+        featured: true
+    };
+};
+
+export const galleryStatusItems = {
+	gaiamod: {
+        loading: createGalleryStatusItem('gaiamod', 'Loading GaiaMod extension gallery...'),
+        more: createGalleryStatusItem('gaiamod', 'Learn more about extensions at gaiawindwave90.github.io/gm-extensions.'),
+        error: createGalleryStatusItem('gaiamod', 'Error loading GaiaMod extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions.')
+    },
+    turbowarp: {
+        loading: createGalleryStatusItem('turbowarp', 'Loading TurboWarp extension gallery...'),
+        more: createGalleryStatusItem('turbowarp', 'Learn more about extensions at extensions.turbowarp.org.'),
+        error: createGalleryStatusItem('turbowarp', 'Error loading TurboWarp extension gallery. Visit extensions.turbowarp.org to find more extensions.')
+    },
+	sharkpool: {
+        loading: createGalleryStatusItem('sharkpool', 'Loading SharkPool's extension gallery...'),
+        more: createGalleryStatusItem('sharkpool', 'Extensions created by SharkPool & other contributors. Click on an extension to add it to your project.'),
+        error: createGalleryStatusItem('sharkpool', 'Error loading SharkPool's extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions.')
+    },
+};
