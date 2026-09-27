@@ -54,8 +54,8 @@ import customExtensionIcon from './custom/custom.svg';
 import returnIcon from './custom/return.svg';
 import galleryIcon from './gallery/gallery.svg';
 
-import spIcon from './sharkpool-gallery/gallery.svg';
-import gmIcon from './gaiamod/gallery.png';;
+import sharkpoolGalleryIcon from './sharkpool-gallery/gallery.svg';
+import gaiaGalleryIcon from './gaiamod/gallery.png';;
 import {APP_NAME} from '../../brand';
 
 export default [
@@ -1042,7 +1042,7 @@ const gallerySourceDisplay = {
     gaiamod: {
         name: 'GaiaMod Extension Gallery',
         href: 'https://gaiawindwave90.github.io/gm-extensions/',
-        iconURL: gmIcon,
+        iconURL: gaiaGalleryIcon,
         tag: 'gm'
     },
     turbowarp: {
