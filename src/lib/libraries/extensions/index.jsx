@@ -454,7 +454,7 @@ export const galleryError = {
 };
 
 //
-export const gaiamodGalleryLoading = {
+export const gaiaGalleryLoading = {
     name: (
         <FormattedMessage
             defaultMessage="GaiaMod Extension Gallery"
@@ -477,7 +477,7 @@ export const gaiamodGalleryLoading = {
     featured: true
 };
 
-export const gaiamodGalleryMore = {
+export const gaiaGalleryMore = {
     name: (
         <FormattedMessage
             defaultMessage="GaiaMod Extension Gallery"
@@ -500,7 +500,7 @@ export const gaiamodGalleryMore = {
     featured: true
 };
 
-export const gaiamodGalleryError = {
+export const gaiaGalleryError = {
     name: (
         <FormattedMessage
             defaultMessage="GaiaMod Extension Gallery"
