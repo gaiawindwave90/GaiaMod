@@ -1025,7 +1025,7 @@ const gallerySourceDisplay = {
     turbowarp: {
         name: 'TurboWarp Extension Gallery',
         href: 'https://extensions.turbowarp.org/',
-        iconURL: twIcon,
+        iconURL: galleryIcon,
         tag: 'tw'
     },
 	sharkpool: {
