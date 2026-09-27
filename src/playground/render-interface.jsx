@@ -57,7 +57,7 @@ const handleClickAddonSettings = (addonId) => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: "Run Scratch projects faster",
+        defaultMessage: "Basically PenguinMod... Supercharged!",
         description: "Title of homepage",
         id: "tw.guiDefaultTitle",
     },
@@ -89,7 +89,7 @@ const Footer = () => (
                 <FormattedMessage
                     // eslint-disable-next-line max-len
                     defaultMessage="{APP_NAME} is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
-                    description="Disclaimer that TurboWarp is not connected to Scratch"
+                    description="Disclaimer that PenguinMod/TurboWarp is not connected to Scratch"
                     id="tw.footer.disclaimer"
                     values={{
                         APP_NAME,
@@ -159,14 +159,14 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://scratch.mit.edu/users/GarboMuffin/#comments">
+                    <a href="https://www.facebook.com/CrystalMae1990/">
                         <FormattedMessage
                             defaultMessage="Feedback & Bugs"
                             description="Link to feedback/bugs page"
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/TurboWarp/">
+                    <a href="https://github.com/gaiawindwave90/GaiaMod/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -285,12 +285,64 @@ class Interface extends React.Component {
                                 <p>
                                     <FormattedMessage
                                         // eslint-disable-next-line max-len
-                                        defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
-                                        description="Description of TurboWarp on the homepage"
+                                        defaultMessage="{gaiaMod} is a mod of {penguinMod} that adds special features in extensions and anything. {penguinMod} is a mod of {turboWarp} that adds new blocks to share projects with other people. {turboWarp} is a {scratch} mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
+                                        description="Description of GaiaMod on the homepage"
                                         id="tw.home.description"
                                         values={{
                                             APP_NAME,
-                                        }}
+											gaiaMod: (
+                                                <a
+												style={{
+                                                color: '#2d2dd3',
+                                                cursor: 'pointer'
+                                            }}
+                                              href="https://gaiawindwave90.github.io/GaiaMod"
+                                              target="_blank"
+                                              rel="noreferrer"
+                                                   >
+                                              {'GaiaMod'}
+                                               </a>
+                                               ),
+										penguinMod: (
+                                                <a
+												style={{
+                                                color: '#00c3ff',
+                                                cursor: 'pointer'
+                                            }}
+                                                href="https://penguinmod.com/"
+                                              target="_blank"
+                                              rel="noreferrer"
+                                                   >
+                                              {'PenguinMod'}
+                                               </a>
+                                               ),
+										turboWarp: (
+                                                <a
+												style={{
+                                                color: '#FF4C4C',
+                                                cursor: 'pointer'
+                                            }}
+                                                href="https://turbowarp.org/"
+                                              target="_blank"
+                                              rel="noreferrer"
+                                                   >
+                                              {'TurboWarp'}
+                                               </a>
+                                               ),
+										scratch: (
+                                                <a
+												style={{
+                                                color: '#FCA919',
+                                                cursor: 'pointer'
+                                            }}
+                                                href="https://scratch.mit.edu/"
+                                              target="_blank"
+                                              rel="noreferrer"
+                                                   >
+                                              {'Scratch'}
+                                               </a>
+                                               ),
+                                            }}
                                     />
                                 </p>
                             </div>
