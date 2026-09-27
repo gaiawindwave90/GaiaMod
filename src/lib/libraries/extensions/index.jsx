@@ -7,9 +7,6 @@ import musicInsetIconURL from './music/music-small.svg';
 import penIconURL from './pen/pen.png';
 import penInsetIconURL from './pen/pen-small.svg';
 
-import cameraIconURL from './camera/camera.svg';
-import cameraInsetIconURL from './camera/camera-small.png';
-
 import videoSensingIconURL from './videoSensing/video-sensing.png';
 import videoSensingInsetIconURL from './videoSensing/video-sensing-small.svg';
 
