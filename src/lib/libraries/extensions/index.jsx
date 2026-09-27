@@ -1010,7 +1010,7 @@ export default [
     ),
     tags: ['sharkpool', 'library'],
     featured: true
-};
+   },
 	//
     {
         name: (
