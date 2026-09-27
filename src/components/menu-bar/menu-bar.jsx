@@ -102,6 +102,7 @@ import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
 import settingsIcon from './icon--settings.svg';
 
+import logo from './scratch-logo.svg';
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
 import prehistoricLogo from './prehistoric-logo.svg';
@@ -511,6 +512,15 @@ class MenuBar extends React.Component {
             >
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
+                        <div className={classNames(styles.menuBarItem)}>
+                            <img
+                            src={logo}
+                            alt="GaiaMod"
+                            onClick={() => {
+                                    window.location.href = "https://gaiawindwave90.github.io/"
+                                }}
+                        />
+                        </div>
                         {this.props.errors.length > 0 && <div>
                             <MenuLabel
                                 open={this.props.errorsMenuOpen}
@@ -1170,6 +1180,7 @@ MenuBar.propTypes = {
     mode220022BC: PropTypes.bool,
     modeMenuOpen: PropTypes.bool,
     modeNow: PropTypes.bool,
+    logo: PropTypes.string,
     onClickAbout: PropTypes.oneOfType([
         PropTypes.func, // button mode: call this callback when the About button is clicked
         PropTypes.arrayOf( // menu mode: list of items in the About menu
@@ -1231,6 +1242,7 @@ MenuBar.propTypes = {
 };
 
 MenuBar.defaultProps = {
+    logo: logo,
     onShare: () => {}
 };
 
