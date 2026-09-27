@@ -971,7 +971,7 @@ export default [
             />
         ),
         extensionId: 'tw',
-        iconURL: smIcon,
+        iconURL: twIcon,
         description: (
             <FormattedMessage
                 defaultMessage="Weird new blocks. Replaced by sensing category in blocks."
