@@ -1031,8 +1031,8 @@ export const galleryStatusItems = {
         error: createGalleryStatusItem('turbowarp', 'Error loading TurboWarp extension gallery. Visit extensions.turbowarp.org to find more extensions.')
     },
 	sharkpool: {
-        loading: createGalleryStatusItem('sharkpool', 'Loading SharkPool's extension gallery...'),
+        loading: createGalleryStatusItem('sharkpool', 'Loading SharkPool\'s extension gallery...'),
         more: createGalleryStatusItem('sharkpool', 'Extensions created by SharkPool & other contributors. Click on an extension to add it to your project.'),
-        error: createGalleryStatusItem('sharkpool', 'Error loading SharkPool's extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions.')
+        error: createGalleryStatusItem('sharkpool', 'Error loading SharkPool\'s extension gallery. Visit gaiawindwave90.github.io/gm-extensions to find more extensions.')
     },
 };
