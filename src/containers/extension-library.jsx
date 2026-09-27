@@ -10,9 +10,9 @@ import extensionLibraryContent, {
     galleryError,
     galleryLoading,
     galleryMore,
-	gaiamodGalleryError,
-    gaiamodGalleryLoading,
-    gaiamodGalleryMore,
+	gaiaGalleryError,
+    gaiaGalleryLoading,
+    gaiaGalleryMore,
     sharkpoolGallery,
     penguinmodGallery
 } from '../lib/libraries/extensions/index.jsx';
@@ -351,7 +351,7 @@ class ExtensionLibrary extends React.PureComponent {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
             if (this.state.gaiaGallery) {
-                library.push(toLibraryItem(gaiamodGalleryMore));
+                library.push(toLibraryItem(gaiaGalleryMore));
                 const locale = this.props.intl.locale;
                 library.push(
                     ...this.state.gaiaGallery
