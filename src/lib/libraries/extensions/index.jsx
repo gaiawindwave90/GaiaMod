@@ -79,7 +79,7 @@ export default [
         tags: ['gm'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
-    }
+    },
     {
         name: (
             <FormattedMessage
