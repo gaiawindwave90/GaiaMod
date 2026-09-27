@@ -7,7 +7,18 @@ import {connect} from 'react-redux';
 import check from './check.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
-import {ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, ACCENT_RAINBOW, ACCENT_CYAN, ACCENT_GREEN, ACCENT_ORANGE, Theme} from '../../lib/themes/index.js';
+import {
+ACCENT_BLUE,
+ACCENT_MAP,
+ACCENT_PURPLE,
+ACCENT_RED,
+ACCENT_RAINBOW,
+ACCENT_CYAN,
+ACCENT_GAIABLUE,
+ACCENT_GREEN,
+ACCENT_ORANGE,
+Theme
+} from '../../lib/themes/index.js';
 import {openAccentMenu, accentMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
@@ -17,7 +28,7 @@ import styles from './settings-menu.css';
 const options = defineMessages({
     [ACCENT_RED]: {
         defaultMessage: 'Red',
-        description: 'Name of the red color scheme, used by TurboWarp by default.',
+        description: 'Name of the red color scheme, used by TurboWarp.',
         id: 'tw.accent.red'
     },
     [ACCENT_ORANGE]: {
@@ -32,7 +43,7 @@ const options = defineMessages({
     },
     [ACCENT_CYAN]: {
         defaultMessage: 'Cyan',
-        description: 'Name of the cyan color scheme, used by PenguinMod by default.',
+        description: 'Name of the cyan color scheme, used by PenguinMod.',
         id: 'pm.gui.accent.cyan'
     },
     [ACCENT_BLUE]: {
@@ -49,6 +60,11 @@ const options = defineMessages({
         defaultMessage: 'Rainbow',
         description: 'Name of color scheme that uses a rainbow.',
         id: 'tw.accent.rainbow'
+    },
+    [ACCENT_GAIABLUE]: {
+        defaultMessage: 'Gaia Blue',
+        description: 'Name of the pure blue color scheme, used by GaiaMod by default.',
+        id: 'tw.accent.red'
     }
 });
 
