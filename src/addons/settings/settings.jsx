@@ -253,6 +253,119 @@ const Tags = ({manifest}) => (
                 {settingsTranslations.tagDanger}
             </span>
         )}
+        {manifest.tags.includes('pot') && (
+            <span className={classNames(styles.tag, styles.tagPotentiamod)} 
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://potentiamod.github.io/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="PotentiaMod Icon"
+                />
+                {settingsTranslations.tagPotentiamod}
+            </span>
+			 )}
+     {manifest.tags.includes('amp') && (
+            <span className={classNames(styles.tag, styles.tagAmpmod)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://ampmod.codeberg.page/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="AmpMod Icon"
+                />
+                {settingsTranslations.tagAmpmod}
+            </span>
+			        )}
+	{manifest.tags.includes('mistium') && (
+            <span className={classNames(styles.tag, styles.tagMistium)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://warp.mistium.com/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="MistWarp Icon"
+                />
+                {settingsTranslations.tagMistium}
+            </span>
+			        )}
+	{manifest.tags.includes('ae') && (
+            <span className={classNames(styles.tag, styles.tagAstraeditor)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://editors.astras.top/online/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="AstraEditor Icon"
+                />
+                {settingsTranslations.tagAstraEditor}
+            </span>
+			        )}
+		{manifest.tags.includes('ztengine') && (
+            <span className={classNames(styles.tag, styles.tagEngine)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://editor.02engine.org/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="02Engine Icon"
+                />
+                {settingsTranslations.tagZtEngine}
+            </span>
+			        )}
+					{manifest.tags.includes('rw') && (
+            <span className={classNames(styles.tag, styles.tagRemixwarp)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://remixwarp.pages.dev/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="RemixWarp Icon"
+                />
+                {settingsTranslations.tagRemixwarp}
+            </span>
+			        )}
+					{manifest.tags.includes('ob') && (
+            <span className={classNames(styles.tag, styles.tagOmniblocks)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://omniblocks.github.io/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="OmniBlocks Icon"
+                />
+                {settingsTranslations.tagOmniblocks}
+            </span>
+			        )}
+	{manifest.tags.includes('pm') && (
+            <span className={classNames(styles.tag, styles.tagPenguinmod)}
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://studio.penguinmod.com/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="PenguinMod Icon"
+                />
+                {settingsTranslations.tagPenguinmod}
+            </span>
+			        )}
+        {manifest.tags.includes('dm') && (
+            <span className={classNames(styles.tag, styles.tagDinosaurmod)} 
+                style={{display: "inline-flex", alignItems: "center", gap: "5px"}}
+            >
+                <img
+                    src="https://dinosaurmod.github.io/favicon.ico"
+                    style={{width: "13px", height: "13px"}}
+                    alt="DinosaurMod Icon"
+                />
+                {settingsTranslations.tagDinosaurmod}
+            </span>
+			 )}
+        {manifest.tags.includes('other') && (
+            <span className={classNames(styles.tag, styles.tagOtherMods)}>
+                {settingsTranslations.tagOtherMods}
+            </span>
+           )}
     </span>
 );
 Tags.propTypes = {
@@ -1123,7 +1236,7 @@ class AddonSettingsComponent extends React.Component {
                 <div className={styles.warning}>
                     <div className={styles.section}>
                         <div className={styles.warningBox}>
-                            PenguinMod is no longer supporting addons in favour of Editor Settings.
+                            GaiaMod is no longer supporting addons in favour of Editor Settings.
                             While we continue work on Editor Settings, addons will still be available, but are not guaranteed to work as they should.
                             Use at your own discretion.
                         </div>
