@@ -103,7 +103,7 @@
         "scratch-render-fonts": "github:PenguinMod-Port/scratch-render-fonts#master",
         "scratch-storage": "github:PenguinMod-Port/scratch-storage#develop",
         "scratch-svg-renderer": "github:PenguinMod-Port/scratch-svg-renderer#develop",
-        "scratch-vm": "github:gaiawindwave90/Gaia-VM#develop",
+        "scratch-vm": "github:PenguinMod-Port/scratch-vm#develop",
         "startaudiocontext": "1.2.1",
         "style-loader": "^0.23.1",
         "sweetalert2": "^11.12.3",
