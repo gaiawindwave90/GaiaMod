@@ -333,7 +333,7 @@ class LibraryComponent extends React.Component {
                                     <TagButton
                                         active={false}
                                         className={classNames(styles.filterBarItem, styles.tagButton)}
-                                        intlLabel="Add your own Extension Pack!"
+                                        intlLabel="Load Custom Library"
                                         tag="manage"
                                         onClick={this.props.onTagManager}
                                     />
