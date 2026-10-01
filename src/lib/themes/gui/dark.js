@@ -18,7 +18,9 @@ const guiColors = {
     'text-primary': '#eeeeee',
     'text-primary-transparent': 'hsla(0, 0%, 93%, 0.5)',
 
-    'menu-bar-background': 'var(--looks-secondary-dark)',
+    'menu-bar-background': 'var(--looks-secondary)',
+    'menu-bar-background-image': 'none',
+    'menu-bar-foreground': '#ffffff',
 
     'assets-background': '#111111',
 
