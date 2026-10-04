@@ -815,20 +815,6 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
                 </value>
             </block>
         `}
-        <block type="sensing_distanceTo">
-            <value name="x1">
-                <shadow type="math_number" />
-            </value>
-            <value name="y1">
-                <shadow type="math_number" />
-            </value>
-            <value name="x2">
-                <shadow type="math_number" />
-            </value>
-            <value name="y2">
-                <shadow type="math_number" />
-            </value>
-        </block>
         ${blockSeparator}
         <block id="askandwait" type="sensing_askandwait">
             <value name="QUESTION">
@@ -914,6 +900,7 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
         ${blockSeparator}
         <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
+        <block type="sensing_loggedin"/>
         ${categorySeparator}
     </category>
     `;
@@ -1210,6 +1197,35 @@ const operators = function (isInitialSetup, isStage, targetId, colour) {
                 <shadow type="math_number">
                     <field name="NUM"/>
                 </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="operator_distanceTo">
+            <value name="x1">
+                <shadow type="math_number" />
+            </value>
+            <value name="y1">
+                <shadow type="math_number" />
+            </value>
+            <value name="x2">
+                <shadow type="math_number" />
+            </value>
+            <value name="y2">
+                <shadow type="math_number" />
+            </value>
+        </block>
+        <block type="operator_directionTo">
+            <value name="x2">
+                <shadow type="math_number" />
+            </value>
+            <value name="y2">
+                <shadow type="math_number" />
+            </value>
+            <value name="x1">
+                <shadow type="math_number" />
+            </value>
+            <value name="y1">
+                <shadow type="math_number" />
             </value>
         </block>
         ${blockSeparator}
