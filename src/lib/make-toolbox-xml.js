@@ -795,6 +795,22 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
                     <shadow type="sensing_touchingobjectmenu"/>
                 </value>
             </block>
+            <block type="sensing_objecttouchingobject">
+                <value name="FULLTOUCHINGOBJECTMENU">
+                    <shadow type="sensing_fulltouchingobjectmenu"/>
+                </value>
+                <value name="SPRITETOUCHINGOBJECTMENU">
+                    <shadow type="sensing_touchingobjectmenusprites"/>
+                </value>
+            </block>
+            <block type="sensing_objecttouchingclonesprite">
+                <value name="FULLTOUCHINGOBJECTMENU">
+                    <shadow type="sensing_fulltouchingobjectmenu"/>
+                </value>
+                <value name="SPRITETOUCHINGOBJECTMENU">
+                    <shadow type="sensing_touchingobjectmenusprites"/>
+                </value>
+            </block>
             <block type="sensing_touchingcolor">
                 <value name="COLOR">
                     <shadow type="colour_picker"/>
@@ -892,6 +908,14 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
         <block id="of" type="sensing_of">
             <value name="OBJECT">
                 <shadow id="sensing_of_object_menu" type="sensing_of_object_menu"/>
+            </value>
+        </block>
+        <block type="sensing_set_of">
+            <value name="OBJECT">
+                <shadow id="sensing_of_object_menu" type="sensing_of_object_menu"/>
+            </value>
+            <value name="VALUE">
+                <shadow type="text" />
             </value>
         </block>
         ${blockSeparator}
