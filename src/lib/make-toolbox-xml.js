@@ -811,6 +811,12 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
                     <shadow type="sensing_touchingobjectmenusprites"/>
                 </value>
             </block>
+            <block type="sensing_getxyoftouchingsprite">
+                <value name="SPRITE">
+                    <shadow type="sensing_distancetomenu"/>
+                </value>
+            </block>
+            ${blockSeparator}
             <block type="sensing_touchingcolor">
                 <value name="COLOR">
                     <shadow type="colour_picker"/>
@@ -922,8 +928,8 @@ const sensing = function (isInitialSetup, isStage, targetId, colour) {
         <block id="current" type="sensing_current"/>
         <block type="sensing_dayssince2000"/>
         ${blockSeparator}
-        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
+        <block id="online" type="sensing_online"/>
         <block type="sensing_loggedin"/>
         ${categorySeparator}
     </category>
