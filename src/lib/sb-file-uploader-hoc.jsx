@@ -80,6 +80,12 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                             multiple: false,
                             types: [
                                 {
+                                    description: 'GaiaMod Project',
+                                    accept: {
+                                        '*/*': ['.gaia']
+                                    }
+                                },
+								{
                                     description: 'PenguinMod Project',
                                     accept: {
                                         '*/*': ['.pmp']
@@ -118,7 +124,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             } else {
                 // create <input> element and add it to DOM
                 this.inputElement = document.createElement('input');
-                this.inputElement.accept = '.sb,.sb2,.sb3,.pmp';
+                this.inputElement.accept = '.sb,.sb2,.sb3,.pmp,.gaia';
                 this.inputElement.style = 'display: none;';
                 this.inputElement.type = 'file';
                 this.inputElement.onchange = this.handleChange; // connects to step 3
@@ -194,8 +200,8 @@ const SBFileUploaderHOC = function (WrappedComponent) {
         getProjectTitleFromFilename (fileInputFilename) {
             if (!fileInputFilename) return '';
             // only parse title with valid scratch project extensions
-            // (.sb, .sb2, .sb3, .pmp)
-            const matches = fileInputFilename.match(/^(.*)\.(sb[23]|pmp)?$/);
+            // (.sb, .sb2, .sb3, .pmp, .gaia)
+            const matches = fileInputFilename.match(/^(.*)\.(sb[23]|pmp|gaia)?$/);
             if (!matches) return '';
             return matches[1].substring(0, 100); // truncate project title to max 100 chars
         }
