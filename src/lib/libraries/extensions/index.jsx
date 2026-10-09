@@ -462,7 +462,7 @@ export default [
                 id="pm.gui.extension.pmSensingExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion', 'hardware', 'internet']
+        tags: ['pm', 'expansion', 'hardware', 'internet'],
         featured: true
     },
     {
