@@ -255,7 +255,7 @@ const Footer = () => (
                 </div>
             </div>
         </div>
-/////////////////////
+
 <hr></hr>
 		<div className={styles.legal} style={{textAlign: 'center'}}>
 	   <p>
@@ -290,7 +290,7 @@ const Footer = () => (
                 >Erase data</a>
             </p>
         </div>
-/////////////////////	
+
     </footer>
 );
 
