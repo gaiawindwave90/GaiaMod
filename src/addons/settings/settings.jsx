@@ -1126,7 +1126,7 @@ class AddonSettingsComponent extends React.Component {
                             <div className={styles.warning}>
                                 <div className={styles.section}>
                                     <div className={styles.warningBox}>
-                                        GaiaMod is no longer supporting addons in favour of Editor Settings.
+                                        PenguinMod is no longer supporting addons in favour of Editor Settings.
                                         While we continue work on Editor Settings, addons will still be available, but are not guaranteed to work as they should.
                                         Use at your own discretion.
                                     </div>
