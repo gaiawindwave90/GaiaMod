@@ -256,7 +256,7 @@ const Footer = () => (
             </div>
         </div>
 
-<hr>
+<hr></hr>
 		<div className={styles.legal} style={{textAlign: 'center'}}>
 	   <p>
 	   <a
