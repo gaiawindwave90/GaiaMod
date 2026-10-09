@@ -462,8 +462,7 @@ export default [
                 id="pm.gui.extension.pmSensingExpansion.description"
             />
         ),
-        tags: ['pm', 'expansion', 'hardware'],
-        featured: true
+        tags: ['pm', 'expansion', 'hardware', 'internet']
     },
     {
         name: (
@@ -746,7 +745,7 @@ export default [
             />
         ),
         tags: ['pm', 'internet'],
-        featured: true
+        internetConnectionRequired: true
     },
     {
         name: (
@@ -891,6 +890,25 @@ export default [
     {
         name: (
             <FormattedMessage
+                defaultMessage="Regular Expressions"
+                description="Name for the dogeiscutRegularExpressions extension"
+                id="pm.gui.extension.dogeiscutRegularExpressions.name"
+            />
+        ),
+        extensionId: 'dogeiscutRegularExpressions',
+        iconURL: require('../extensions/penguinmod/dogeiscutRegularExpressions.svg'),
+        description: (
+            <FormattedMessage
+                defaultMessage="Match data from pieces of text with regular expressions."
+                description="Description for the dogeiscutRegularExpressions extension"
+                id="pm.gui.extension.dogeiscutRegularExpressions.description"
+            />
+        ),
+        tags: ['pm', 'type']
+    },
+    {
+        name: (
+            <FormattedMessage
                 defaultMessage="Sound Systems"
                 description="Name for the jgExtendedAudio extension"
                 id="pm.gui.extension.jgExtendedAudio.name"
@@ -986,55 +1004,7 @@ export default [
             />
         ),
         tags: ['pm', 'data', 'internet'],
-        featured: true
-    },
-	//
-{
-	name: (
-        <FormattedMessage
-            defaultMessage="SharkPool's Extension Gallery"
-            description="Name of sharkpools-extensions.vercel.app/ in extension library"
-            id="pm.sharkpoolGallery.name"
-        />
-    ),
-    href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
-    extensionId: 'sharkpool-gallery',
-    iconURL: sharkpoolGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
-            description="Name for the sharkpoolGallery gallery"
-            id="pm.sharkpoolGallery.more"
-        />
-    ),
-    tags: ['sharkpool', 'library'],
-    featured: true
-   },
-	//
-    {
-        name: (
-            <FormattedMessage
-                defaultMessage="TurboWarp Blocks"
-                description="Name of the strange 'TurboWarp Blocks' extension"
-                id="tw.twExtension.name"
-                values={{
-                    APP_NAME
-                }}
-            />
-        ),
-        extensionId: 'tw',
-        iconURL: twIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Weird new blocks. Replaced by sensing category in blocks."
-                description="Description of the strange 'TurboWarp Blocks' extension"
-                id="tw.twExtension.description"
-            />
-        ),
-        incompatibleWithScratch: true,
-        tags: ['tw'],
-        featured: true
+        internetConnectionRequired: true
     }
 ];
 
