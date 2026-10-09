@@ -47,6 +47,30 @@ import {APP_NAME} from '../lib/brand.js';
 
 import styles from "./interface.css";
 
+const urlParams = new URLSearchParams(location.search);
+const Local = String(window.location.href).startsWith(`http://localhost:`);
+const LiveTests = urlParams.has('livetest');
+const Secrets = urlParams.has('allpowerscombined');
+
+//Taken from LibreKitten.
+const hardRefresh = () => {
+    const search = location.search.replace(/[?&]nocache=\d+/, '');
+    location.replace(`${location.pathname + search + (search ? '&' : '?')}nocache=${Math.floor(Math.random() * 100000)}`);
+};
+
+const eraseData = async () => {
+    if (confirm('Please be aware that this will reset all your local data, including the Restore Points and backpack. Are you sure you want to continue?')) {
+        
+        localStorage.clear();
+        indexedDB.deleteDatabase('TW_RestorePoints');
+        indexedDB.deleteDatabase('TW_Backpack');
+        indexedDB.deleteDatabase('p4-local-settings');
+        indexedDB.deleteDatabase('p4-large-assets');
+        indexedDB.deleteDatabase('tw:library-favorites:extensionLibrary');
+        location.reload();
+    }
+};
+
 const isInvalidEmbed = window.parent !== window;
 
 const handleClickAddonSettings = (addonId) => {
@@ -128,31 +152,56 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
+					<a href="https://penguinmod.com/donate">
+                        <FormattedMessage
+                            defaultMessage="Donate to PenguinMod Developer"
+                            description="Donation link to PenguinMod in footer"
+                            id="tw.footer.donatePenguinmod"
+                        />
+                    </a>
+					  <a href="https://github.com/sponsors/GarboMuffin">
+                        <FormattedMessage
+                            defaultMessage="Donate to TurboWarp Developer"
+                            description="Donation link in footer"
+                            id="tw.footer.donate"
+                        />
+                    </a>
+					<a href="https://www.scratchfoundation.org/donate">
+                        <FormattedMessage
+                            defaultMessage="Donate to Scratch Developers"
+                            description="Donation link to Scratch in footer"
+                            id="tw.footer.donateScratch"
+                        />
+                    </a>
                 </div>
                 <div className={styles.footerSection}>
                     <a href="https://desktop.turbowarp.org/">
                         {/* Do not translate */}
                         {"TurboWarp Desktop"}
                     </a>
-                    <a href="https://packager.turbowarp.org/">
+                    <a href="https://gaiamod-main.github.io/GaiaMod-Packager">
                         {/* Do not translate */}
-                        {"TurboWarp Packager"}
+                        {"GaiaMod Packager"}
                     </a>
-                    <a href="https://docs.turbowarp.org/embedding">
+					<a href="https://studio.penguinmod.com/PenguinMod-Packager">
+                        {/* Do not translate */}
+                        {"PenguinMod Packager"}
+                    </a>
+                    <a href="https://gaiawindwave90.github.io/GaiaMod-Docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/url-parameters">
+                    <a href="https://gaiawindwave90.github.io/GaiaMod-Docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/">
+                    <a href="https://gaiawindwave90.github.io/GaiaMod-Docs/">
                         <FormattedMessage
                             defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
@@ -166,6 +215,27 @@ const Footer = () => (
                             defaultMessage="Feedback & Bugs"
                             description="Link to feedback/bugs page"
                             id="tw.feedback"
+                        />
+                    </a>
+					<a href="https://gaiawindwave90.github.io">
+                        <FormattedMessage
+                            defaultMessage="Gaia Zone"
+                            description="The main website."
+                            id="tw.gaiasite"
+                        />
+                    </a>
+					<a href="https://gaiamod-main.github.io/">
+                        <FormattedMessage
+                            defaultMessage="Legacy version"
+                            description="A link to the legacy version."
+                            id="tw.gaiasite2"
+                        />
+                    </a>
+					<a href="https://potentiamod.github.io/">
+                        <FormattedMessage
+                            defaultMessage="PotentiaMod"
+                            description="A link to PotentiaMod."
+                            id="tw.potentiamodlink"
                         />
                     </a>
                     <a href="https://github.com/gaiawindwave90/GaiaMod/">
@@ -185,6 +255,42 @@ const Footer = () => (
                 </div>
             </div>
         </div>
+/////////////////////
+<hr></hr>
+		<div className={styles.legal} style={{textAlign: 'center'}}>
+	   <p>
+	   <a
+                            href="https://potentiamod.github.io/"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            <img
+                            width="125px"
+                            alt="PotentiaMod"
+                            src="https://potentiamod.github.io/images/512.png"
+                            draggable={false}
+                        />
+							</a>
+							</p>
+							<p>
+							<b>
+						<em>
+                            <FormattedMessage
+                                defaultMessage="Also, check out PotentiaMod! It's better."
+                                description="Link on the main page to the PotentiaMod page"
+                                id="pot.projectrender.potentiamod"
+                            />
+							</em>
+							</b>
+							</p>		
+            <p className={styles.info}>
+                Version: 1.0.8 | <a
+                    onClick={eraseData}
+                    style={{color: 'red'}}
+                >Erase data</a>
+            </p>
+        </div>
+/////////////////////	
     </footer>
 );
 
