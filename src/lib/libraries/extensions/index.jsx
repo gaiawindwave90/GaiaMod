@@ -906,7 +906,8 @@ export default [
                 id="pm.gui.extension.dogeiscutRegularExpressions.description"
             />
         ),
-        tags: ['pm', 'type']
+        tags: ['pm', 'type'],
+        featured: true
     },
     {
         name: (
