@@ -463,6 +463,7 @@ export default [
             />
         ),
         tags: ['pm', 'expansion', 'hardware', 'internet']
+        featured: true
     },
     {
         name: (
@@ -745,7 +746,8 @@ export default [
             />
         ),
         tags: ['pm', 'internet'],
-        internetConnectionRequired: true
+        internetConnectionRequired: true,
+        featured: true
     },
     {
         name: (
@@ -887,7 +889,7 @@ export default [
         tags: ['pm', 'math', 'type'],
         featured: true
     },
-    {
+	{
         name: (
             <FormattedMessage
                 defaultMessage="Regular Expressions"
@@ -1004,7 +1006,56 @@ export default [
             />
         ),
         tags: ['pm', 'data', 'internet'],
-        internetConnectionRequired: true
+        internetConnectionRequired: true,
+        featured: true
+    },
+	//
+{
+	name: (
+        <FormattedMessage
+            defaultMessage="SharkPool's Extension Gallery"
+            description="Name of sharkpools-extensions.vercel.app/ in extension library"
+            id="pm.sharkpoolGallery.name"
+        />
+    ),
+    href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
+    extensionId: 'sharkpool-gallery',
+    iconURL: sharkpoolGalleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
+            description="Name for the sharkpoolGallery gallery"
+            id="pm.sharkpoolGallery.more"
+        />
+    ),
+    tags: ['sharkpool', 'library'],
+    featured: true
+   },
+	//
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="TurboWarp Blocks"
+                description="Name of the strange 'TurboWarp Blocks' extension"
+                id="tw.twExtension.name"
+                values={{
+                    APP_NAME
+                }}
+            />
+        ),
+        extensionId: 'tw',
+        iconURL: twIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Weird new blocks. Replaced by sensing category in blocks."
+                description="Description of the strange 'TurboWarp Blocks' extension"
+                id="tw.twExtension.description"
+            />
+        ),
+        incompatibleWithScratch: true,
+        tags: ['tw'],
+        featured: true
     }
 ];
 
