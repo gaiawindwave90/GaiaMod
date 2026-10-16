@@ -2,19 +2,22 @@ name: Build and Deploy
 
 on:
   workflow_dispatch:
-  repository_dispatch:
+    inputs:
+      semver:
+        description: "Semver (leave blank if not making release, example '1.0.0')"
+        type: string
+        required: false
   push:
-    branches: ["develop"]
+  pull_request:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: "deploy"
+  group: "${{ github.workflow }}-${{ github.head_ref || github.ref }}"
   cancel-in-progress: true
-  #ci-${{ github.ref }}
 
 jobs:
   build:
@@ -45,4 +48,19 @@ jobs:
       with:
         path: ./build/
     - name: Deploy to GitHub Pages
+      if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
       uses: actions/deploy-pages@v4.0.5
+
+    - name: Make zip for release
+      if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop' && inputs.semver
+      run: |
+        cd ./build/
+        zip -r ../penguinmod-v${{ inputs.semver }}.zip .
+    - name: Create release
+      if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop' && inputs.semver
+      uses: ncipollo/release-action@v1.21.0
+      with:
+        tag: "v${{ inputs.semver }}"
+        name: "v${{ inputs.semver }}"
+        commit: develop
+        artifacts: "penguinmod-v${{ inputs.semver }}.zip"
