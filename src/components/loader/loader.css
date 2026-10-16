@@ -16,6 +16,44 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
     color: white;
+    animation-duration: 0.25s;
+    animation-iteration-count: 1;
+    animation-name: BG_SHOW;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+    overflow: hidden;
+}
+
+.fadeOut {
+  animation-name: BG_HIDE;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+@keyframes BG_SHOW {
+  from{
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+@keyframes BG_HIDE {
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.75rem 0;
 }
 
 .fullscreen {
@@ -23,6 +61,24 @@
     position: fixed;
     /* Use the fullscreen stage z-index to allow covering full-screen mode */
     z-index: $z-index-stage-wrapper-overlay;
+}
+
+.tips {
+  color: hsla(100, 100%, 100%, 1);
+  font-style: italic;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.logo-float {
+  animation: floating 3s ease-in-out infinite;
+  margin: 50px auto 0px;
+}
+
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); } /* Moves up */
+  100% { transform: translateY(0px); } /* Returns home */
 }
 
 .block-animation {
@@ -189,4 +245,18 @@
     width: 0;
     height: 100%;
     background-color: $ui-white-default;
+}
+.github-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 1rem;
+    color: inherit;
+    font-size: 0.75rem;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
 }
