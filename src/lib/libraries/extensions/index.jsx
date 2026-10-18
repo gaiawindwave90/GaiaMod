@@ -384,8 +384,108 @@ export default [
         ),
         helpLink: 'https://scratch.mit.edu/vernier'
     },
-	//PenguinMod!
-	{
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Custom Extension"
+                description="Name of library item to load a custom extension from a remote source"
+                id="tw.customExtension.name"
+            />
+        ),
+        extensionId: 'custom_extension',
+        iconURL: customExtensionIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Load custom extensions from URLs, files, or JavaScript source code."
+                description="Description of library item to load a custom extension from a custom source"
+                id="tw.customExtension.description"
+            />
+        ),
+        tags: [],
+        featured: true
+    }
+];
+
+export const galleryLoading = {
+    name: (
+        <FormattedMessage
+            defaultMessage="{APP_NAME} Extension Gallery"
+            description="Name of extensions.turbowarp.org in extension library"
+            id="tw.extensionGallery.name"
+            values={{
+                APP_NAME: 'TurboWarp'
+            }}
+        />
+    ),
+    href: 'https://extensions.turbowarp.org/',
+    extensionId: 'gallery',
+    iconURL: galleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Loading extension gallery..."
+            description="Appears while loading extension list from the custom extension gallery"
+            id="tw.extensionGallery.loading"
+        />
+    ),
+    tags: ['tw', 'library'],
+    featured: true
+};
+
+export const galleryMore = {
+    name: (
+        <FormattedMessage
+            defaultMessage="{APP_NAME} Extension Gallery"
+            description="Name of extensions.turbowarp.org in extension library"
+            id="tw.extensionGallery.name"
+            values={{
+                APP_NAME: 'TurboWarp'
+            }}
+        />
+    ),
+    href: 'https://extensions.turbowarp.org/',
+    extensionId: 'gallery',
+    iconURL: galleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Learn more about extensions at extensions.turbowarp.org."
+            description="Appears after the extension list from the gallery was loaded successfully"
+            id="tw.extensionGallery.more"
+        />
+    ),
+    tags: ['tw', 'library'],
+    featured: true
+};
+
+export const galleryError = {
+    name: (
+        <FormattedMessage
+            defaultMessage="{APP_NAME} Extension Gallery"
+            description="Name of extensions.turbowarp.org in extension library"
+            id="tw.extensionGallery.name"
+            values={{
+                APP_NAME: 'TurboWarp'
+            }}
+        />
+    ),
+    href: 'https://extensions.turbowarp.org/',
+    extensionId: 'gallery',
+    iconURL: galleryIcon,
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Error loading extension gallery. Visit extensions.turbowarp.org to find more extensions."
+            description="Appears when an error occurred loading extension list from the custom extension gallery"
+            id="tw.extensionGallery.error"
+        />
+    ),
+    tags: ['tw', 'library'],
+    featured: true
+};
+
+export const penguinmodGallery = [
+    {
         name: (
             <FormattedMessage
                 defaultMessage="Motion Expansion"
@@ -1007,55 +1107,27 @@ export default [
             />
         ),
         tags: ['pm', 'data', 'internet'],
-        internetConnectionRequired: true,
-        featured: true
-    },
-	//
-{
-	name: (
-        <FormattedMessage
-            defaultMessage="SharkPool's Extension Gallery"
-            description="Name of sharkpools-extensions.vercel.app/ in extension library"
-            id="pm.sharkpoolGallery.name"
-        />
-    ),
-    href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
-    extensionId: 'sharkpool-gallery',
-    iconURL: sharkpoolGalleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
-            description="Name for the sharkpoolGallery gallery"
-            id="pm.sharkpoolGallery.more"
-        />
-    ),
-    tags: ['sharkpool', 'library'],
-    featured: true
-   },
-	//
-    {
+        internetConnectionRequired: true
+    }, {
         name: (
             <FormattedMessage
-                defaultMessage="TurboWarp Blocks"
-                description="Name of the strange 'TurboWarp Blocks' extension"
-                id="tw.twExtension.name"
-                values={{
-                    APP_NAME
-                }}
+                defaultMessage="SharkPool's Extension Gallery"
+                description="Name of sharkpools-extensions.vercel.app/ in extension library"
+                id="pm.gui.extension.sharkpoolGallery.name"
             />
         ),
-        extensionId: 'tw',
-        iconURL: twIcon,
+        href: 'https://sharkpools-extensions.vercel.app/?originPM=true',
+        extensionId: 'sharkpool-gallery',
+        iconURL: sharkpoolGalleryIcon,
         description: (
             <FormattedMessage
-                defaultMessage="Weird new blocks. Replaced by sensing category in blocks."
-                description="Description of the strange 'TurboWarp Blocks' extension"
-                id="tw.twExtension.description"
+                // eslint-disable-next-line max-len
+                defaultMessage="Extensions created by SharkPool & other contributors. Click on an extension to add it to your project."
+                description="Description for the sharkpoolGallery gallery"
+                id="pm.gui.extension.sharkpoolGallery.description"
             />
         ),
-        incompatibleWithScratch: true,
-        tags: ['tw'],
+        tags: ['library'],
         featured: true
     }
 ];

@@ -7,7 +7,10 @@ import log from '../lib/log';
 import {manuallyTrustExtension} from './tw-security-manager.jsx';
 
 import extensionLibraryContent, {
-    galleryStatusItems
+    galleryError,
+    galleryLoading,
+    galleryMore,
+    penguinmodGallery
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/extension-tags';
 import {
@@ -426,45 +429,20 @@ class ExtensionLibrary extends React.PureComponent {
 
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
-
-            for (const source of gallerySources) {
-                const sourceGallery = this.state.galleryBySource ? this.state.galleryBySource[source.id] : null;
-                const sourceStatusItems = galleryStatusItems[source.id];
-
-                const extensionsToExclude = [
-                    'faceSensing',
-                    'fullscreen0419',
-                    'images',
-                    'lmsCast',
-                    'lmscomments',
-                    'lmsHackedBlocks',
-                    'lmsmcutils',
-                    'lmsutilsblocks',
-                    'RixxyX',
-                    'ShovelUtils',
-                    'skyhigh173JSON'
-                ];
-                const sourceExtensionsToExclude = source.id === 'turbowarp' ? [
-                    'penP',
-                    'xeltallivclipblend'
-                ] : [];
-
-                if (sourceGallery && sourceGallery.status === 'success') {
-                    library.push(toLibraryItem(sourceStatusItems.more));
-                    library.push(
-                        ...sourceGallery.extensions
-                            .filter(i => !extensionsToExclude.includes(i.extensionId) &&
-                                !sourceExtensionsToExclude.includes(i.extensionId))
-                            .map(i => translateGalleryItem(i, locale))
-                            .map(toLibraryItem)
-                    );
-                } else if (sourceGallery && sourceGallery.status === 'error') {
-                    library.push(toLibraryItem(sourceStatusItems.error));
-                } else {
-                    library.push(toLibraryItem(sourceStatusItems.loading));
-                }
-
-                library.push('---');
+            library = library.concat(penguinmodGallery.map(toLibraryItem));
+            library.push('---');
+            if (this.state.gallery) {
+                library.push(toLibraryItem(galleryMore));
+                const locale = this.props.intl.locale;
+                library.push(
+                    ...this.state.gallery
+                        .map(i => translateGalleryItem(i, locale))
+                        .map(toLibraryItem)
+                );
+            } else if (this.state.galleryError) {
+                library.push(toLibraryItem(galleryError));
+            } else {
+                library.push(toLibraryItem(galleryLoading));
             }
 
             if (this.state.individualExtensions.length) {
